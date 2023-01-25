@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	message = Message::GetInstance();
 
 	//DirectX初期化処理
-	DirectXCommon* dxCommon = nullptr;
+	DirectXCommon* dxCommon = nullptr; 
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp);
 
