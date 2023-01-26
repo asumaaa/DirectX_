@@ -19,6 +19,27 @@
     <Filter Include="ヘッダー ファイル\base">
       <UniqueIdentifier>{1bcf59ac-cd26-4d90-b2cb-0636772693f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\fbx">
+      <UniqueIdentifier>{91875b7a-90ff-4946-bc1a-31d1bfa6f0dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\fbx">
+      <UniqueIdentifier>{09c18d0b-caf8-4675-b36f-c363b92d1f00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Shaders">
+      <UniqueIdentifier>{09be63ff-a021-4247-9150-a7f9892d62e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Shaders\FbxShader">
+      <UniqueIdentifier>{4b5dab08-afef-49cc-b296-af213c7bc157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Shaders\OBJShader">
+      <UniqueIdentifier>{ee3ba699-408e-4d48-b695-83f4d720ae17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Shaders\ParticleShader">
+      <UniqueIdentifier>{9fc72b5c-7b72-4c50-a0d5-fa22a87ea9cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Shaders\SpriteShader">
+      <UniqueIdentifier>{68e2456c-3c29-4446-922d-dbfc2ef37385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +66,18 @@
     <ClCompile Include="base\DXInput.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
+    <ClCompile Include="fbx\FbxLoader.cpp">
+      <Filter>ソース ファイル\fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="fbx\FbxModel.cpp">
+      <Filter>ソース ファイル\fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="fbx\FbxObject3D.cpp">
+      <Filter>ソース ファイル\fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameScene.h">
@@ -68,5 +101,30 @@
     <ClInclude Include="base\DXInput.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
+    <ClInclude Include="fbx\FbxLoader.h">
+      <Filter>ヘッダー ファイル\fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="fbx\FbxModel.h">
+      <Filter>ヘッダー ファイル\fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="fbx\FbxObject3D.h">
+      <Filter>ヘッダー ファイル\fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FbxHeader.hlsli">
+      <Filter>リソース ファイル\Shaders\FbxShader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="FbxPixelShader.hlsl">
+      <Filter>リソース ファイル\Shaders\FbxShader</Filter>
+    </FxCompile>
+    <FxCompile Include="FbxVertexShader.hlsl">
+      <Filter>リソース ファイル\Shaders\FbxShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

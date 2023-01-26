@@ -2,9 +2,9 @@
 #include "Message.h"
 #include "Input.h"
 #include "DirectXCommon.h"
+#include "DirectXTex.h"
 #include "GameScene.h"
 #include "FPS.h"
-#include "fbxsdk.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
