@@ -61,7 +61,7 @@ private://メンバ変数
 
 private:
 	//ローカルスケール
-	XMFLOAT3 scale = { 1,1,1 };
+	XMFLOAT3 scale = { 10,10,10 };
 	//X,Y,Z軸回りのローカル行列
 	XMFLOAT3 rotation = { 0,0,0 };
 	//ローカル座標

@@ -6,7 +6,6 @@
 #include "DXInput.h"
 #include "DirectXCommon.h"
 #include "FbxObject3D.h"
-#include "FbxLoader.h"
 #include "Camera.h"
 
 class GameScene

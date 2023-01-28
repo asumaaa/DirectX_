@@ -6,10 +6,6 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-//#include "FbxGeometryShader.hlsl"
-//#include "FbxPixelShader.hlsl"
-//#include "FbxVertexShader.hlsl"
-
 ComPtr<ID3D12RootSignature>FbxObject3D::rootsignature;
 ComPtr<ID3D12PipelineState>FbxObject3D::pipelinestate;
 

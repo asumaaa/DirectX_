@@ -69,6 +69,11 @@ public:
 	//ディレクトリを含んだファイルパスからファイル名を抽出する
 	std::string ExtractFileName(const std::string& path);
 
+	//FBXの行列をXMMATRIXに変換
+	static void ConvertMatrixFromFbx(DirectX::XMMATRIX* dst,const FbxAMatrix& src);
+	//スキニング情報読み取り
+	void ParseSkin(FbxModel* model, FbxMesh* fbxMesh);
+
 private:
 	string textureName;
 };
