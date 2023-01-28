@@ -384,6 +384,7 @@ void FbxLoader::ParseSkin(FbxModel* model, FbxMesh* fbxMesh)
         const char* boneName = fbxCluster->GetLink()->GetName();
         //新しくボーンを追加し、追加したボーンの参照を得る
         bones.emplace_back(FbxModel::Bone(boneName));
+        FbxModel::Bone& bone = bones.back();
         //自作ボーンとFBXのボーンを紐づける
         bone.fbxCluster = fbxCluster;
         //FBXぶから初期姿勢行列を取得する
@@ -393,7 +394,7 @@ void FbxLoader::ParseSkin(FbxModel* model, FbxMesh* fbxMesh)
         XMMATRIX initialPose;
         ConvertMatrixFromFbx(&initialPose, fbxMat);
         //初期姿勢行列の逆行列を得る
-        bone.invInitialPose = XMMatrixInverse(nullptr, initialPose);
+        bone.invInitalPose = XMMatrixInverse(nullptr, initialPose);
     }
 
     //ボーン番号とスキンウェイトのペア
@@ -442,7 +443,7 @@ void FbxLoader::ParseSkin(FbxModel* model, FbxMesh* fbxMesh)
         weightList.sort(
             [](auto const& lhs, auto const& rhs)
             {
-                return lhs.Weight > rhs.weight;
+                return lhs.weight > rhs.weight;
             });
         int weightArrayIndex = 0;
         //降順ソート済のウェイトリストから

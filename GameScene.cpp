@@ -18,13 +18,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Camera* newCamera = new Camera();
 	newCamera->Initialize(input_);
 	camera_.reset(newCamera);
-	camera_->SetTarget({ 0,20,0 });
-	camera_->SetEye({ 0, 0, -10 });
+	camera_->SetTarget({ 0,0,0 });
+	camera_->SetEye({ 5, 10, -10 });
 
 	//FBX読み込み
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("cube", "Resources/cube/Crate.jpg");
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest", "Resources/white1x1.png");
 
 	//デバイスをセット
 	FbxObject3D::SetDevice(dxCommon_->GetDevice());
