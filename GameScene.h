@@ -8,6 +8,8 @@
 #include "FbxObject3D.h"
 #include "CubeObject3D.h"
 #include "CubeModel.h"
+#include "Metaball.h"
+#include "Collision.h"
 #include "Camera.h"
 
 class GameScene
@@ -37,5 +39,13 @@ private:
 	//キューブ
 	std::unique_ptr<CubeModel> cubeModel;
 	std::unique_ptr<CubeObject3D> cubeObject;
+
+	//メタボール
+	std::unique_ptr<Metaball>metaball;
+
+	//当たり判定を行うオブジェクトの数
+	size_t stageObjNum = 1;
+	//当たり判定
+	std::list<std::unique_ptr<Collision>> collisions;
 };
 
