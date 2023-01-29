@@ -58,6 +58,13 @@ public://メンバ関数
 	void SetModel(FbxModel* model) { this->model = model; }
 	//グラフィックスパイプラインの生成
 	static void CreateGraphicsPipeline();
+	//アニメーション開始
+	void PlayAnimation();
+
+	//セッター
+	void SetPosition(XMFLOAT3 pos) { position = pos; }
+	void SetRotation(XMFLOAT3 rot) { rotation = rot; }
+	void SetScale(XMFLOAT3 sca) { scale = sca; }
 
 private://メンバ変数
 	//定数バッファ
@@ -81,4 +88,15 @@ private:
 
 	//定数バッファ
 	ComPtr<ID3D12Resource>constBuffSkin;
+
+	//1フレームの時間
+	FbxTime frameTime;
+	//アニメーション開始時間
+	FbxTime startTime;
+	//アニメーション終了時間
+	FbxTime endTime;
+	//現在時間
+	FbxTime currentTime;
+	//アニメーション再生中
+	bool isPlay = false;
 };

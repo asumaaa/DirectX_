@@ -34,11 +34,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	object1 = new FbxObject3D;
 	object1->Initialize();
 	object1->SetModel(model1);
+	object1->PlayAnimation();
 }
 
 void GameScene::Update()
 {
 	camera_->Update();
+
 	object1->Update();
 
 	//コントローラー更新

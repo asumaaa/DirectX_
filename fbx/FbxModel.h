@@ -131,6 +131,7 @@ public:
 private:
 	//FBXÉVÅ[Éì
 	FbxScene* fbxScene = nullptr;
+public:
 	//getter
 	FbxScene* GetFbxScene() { return fbxScene; }
 };
