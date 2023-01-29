@@ -188,7 +188,7 @@ void Metaball::Initialize()
 void Metaball::Update()
 {
 	//ASDWでXY、ZXでZ軸を移動
-	if (input->PushKey(DIK_D))
+	/*if (input->PushKey(DIK_D))
 	{
 		position.x += 0.55 * 1/4 * 2.3f;
 		position.z -= 0.55 * 1/6 * 2.3f;
@@ -197,7 +197,7 @@ void Metaball::Update()
 	{
 		position.x -= 0.55 * 1 / 4 * 2.3f;
 		position.z += 0.55 * 1 / 6 * 2.3f;
-	}
+	}*/
 	/*if (input->PushKey(DIK_W))
 	{
 		position.y += 0.55;
@@ -206,7 +206,7 @@ void Metaball::Update()
 	{
 		position.y -= 0.55;
 	}*/
-	if (input->PushKey(DIK_W))
+	/*if (input->PushKey(DIK_W))
 	{
 		position.x += 0.55 * 1 / 4 * 2.3f;
 		position.z += 0.55 * 1 / 3 * 2.3f;
@@ -215,7 +215,7 @@ void Metaball::Update()
 	{
 		position.x -= 0.55 * 1 / 4 * 2.3f;
 		position.z -= 0.55 * 1 / 3 * 2.3f;
-	}
+	}*/
 
 	//if (input->PushKey(DIK_D))
 	//{
@@ -242,27 +242,27 @@ void Metaball::Update()
 	//	position.z -= 0.55;
 	//}
 
-	//スペースキーでジャンプ
-	if(input->PushKey(DIK_SPACE) && groundFlag == true)
-	{
-		//接地フラグをfalseに
-		fallTimer = -1;
-		groundFlag = false;
-	}
+	////スペースキーでジャンプ
+	//if(input->PushKey(DIK_SPACE) && groundFlag == true)
+	//{
+	//	//接地フラグをfalseに
+	//	fallTimer = -1;
+	//	groundFlag = false;
+	//}
 
-	//地面に接していない場合の落下処理
-	if (groundFlag == false)
-	{
-		//60フレームでタイマーを1進める
-		fallTimer += 3.0f / 60.0f;
-		//落下ベクトル計算
-		float v = GAcceleration * fallTimer;
-		fallVelocity.y = -(GAcceleration * fallTimer);
-		//座標に加算
-		position.x += fallVelocity.x;
-		position.y += fallVelocity.y;
-		position.z += fallVelocity.z;
-	}
+	////地面に接していない場合の落下処理
+	//if (groundFlag == false)
+	//{
+	//	//60フレームでタイマーを1進める
+	//	fallTimer += 3.0f / 60.0f;
+	//	//落下ベクトル計算
+	//	float v = GAcceleration * fallTimer;
+	//	fallVelocity.y = -(GAcceleration * fallTimer);
+	//	//座標に加算
+	//	position.x += fallVelocity.x;
+	//	position.y += fallVelocity.y;
+	//	position.z += fallVelocity.z;
+	//}
 
 	XMMATRIX matScale, matRot, matTrans;
 

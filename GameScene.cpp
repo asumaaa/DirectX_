@@ -15,11 +15,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	this->input_ = input;
 
 	//カメラ初期化
+	Camera::SetInput(input_);
+	Camera::SetDXInput(dxInput);
 	Camera* newCamera = new Camera();
-	newCamera->Initialize(input_);
+	newCamera->Initialize();
 	camera_.reset(newCamera);
 	camera_->SetTarget({ 0,0,0 });
-	camera_->SetEye({ 0, 10, -50 });
+	camera_->SetEye({ 0, 0, -50 });
 
 	//FBX読み込み
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
@@ -47,7 +49,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	CubeModel* newCubeModel = new CubeModel();
 	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
 	cubeModel.reset(newCubeModel);
-	cubeModel->SetImageData({ 0.7f, 0.3f, 0.3f,1.0f });
+	cubeModel->SetImageData({ 0.7f, 0.3f, 0.3f,0.1f });
 
 	//キューブオブジェクトの設定
 	CubeObject3D* newCubeObject = new CubeObject3D();
@@ -63,38 +65,29 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Metaball::SetCamera(camera_.get());
 	Metaball::CreateGraphicsPipeline();
 
-	Metaball* newMetaball = new Metaball();
-	newMetaball->Initialize();
-	newMetaball->SetInput(input_);
-	newMetaball->SetImageData({ 1.0, 1.0, 1.0, 1 });
-	newMetaball->SetPosition({ 0,10,0 });
-	newMetaball->SetScale({ 3,3,3 });
-	metaball.reset(newMetaball);
-
-	//当たり判定初期化
-	for (int i = 0; i < stageObjNum; i++)
-	{
-		std::unique_ptr<Collision>newCollision = std::make_unique<Collision>();
-		newCollision->SetObject(cubeObject->GetPosition(), cubeObject->GetScale());
-		collisions.push_back(std::move(newCollision));
-	}
-
+	//プレイヤーセット
+	Player::SetDevice(dxCommon_->GetDevice());
+	Player::SetCamera(camera_.get());
+	Player::SetInput(input_);
+	Player::SetDXInput(dxInput);
+	//プレイヤー初期化
+	Player* newPlayer = new Player();
+	newPlayer->Initialize();
+	player.reset(newPlayer);
+	//プレイヤーに当たり判定をセット
+	player->SetCollision(cubeObject->GetPosition(), cubeObject->GetScale());
 }
 
 void GameScene::Update()
 {
 	camera_->Update();
 
+	//fBXオブジェクト更新
 	object1->Update();
+	//キューブオブジェクト更新
 	cubeObject->Update();
-
-	//当たり判定更新
-	for (std::unique_ptr<Collision>& collision : collisions)
-	{
-		metaball->UpdateCollision(collision.get());
-	}
-
-	metaball->Update();
+	//プレイヤー更新
+	player->Update();
 
 	//コントローラー更新
 	dxInput->InputProcess();
@@ -103,6 +96,8 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	/*object1->Draw(dxCommon_->GetCommandList());*/
+	//キューブ描画
 	cubeObject->Draw(dxCommon_->GetCommandList());
-	metaball->Draw(dxCommon_->GetCommandList());
+	//プレイヤー描画
+	player->Draw(dxCommon_->GetCommandList());
 }

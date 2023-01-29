@@ -2,6 +2,9 @@
 #include "Math.h"
 #define PI 3.14159265359
 
+Input* Camera::input = nullptr;
+DXInput* Camera::dxInput = nullptr;
+
 Camera* Camera::GetInstance()
 {
 	static Camera instance;
@@ -16,11 +19,8 @@ Camera::~Camera()
 {
 }
 
-void Camera::Initialize(Input* input)
+void Camera::Initialize()
 {
-	//ˆø”‚©‚çŽó‚¯Žæ‚Á‚½ƒf[ƒ^‚ð‘ã“ü
-	this->input_ = input;
-
 	//ŽË‰e•ÏŠ·
 	matProjection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0f),			//ã‰º‰æŠp45“x
@@ -35,6 +35,32 @@ void Camera::Initialize(Input* input)
 
 void Camera::Update()
 {
+	/*if (input->PushKey(DIK_D))
+	{
+		position.x += 0.55;
+	}
+	if (input->PushKey(DIK_A))
+	{
+		position.x -= 0.55;
+	}*/
+	if (input->PushKey(DIK_W))
+	{
+		eye_.y += 0.55;
+	}
+	if (input->PushKey(DIK_S))
+	{
+		eye_.y -= 0.55;
+	}
+	/*if (input->PushKey(DIK_W))
+	{
+		position.z += 0.55;
+	}
+	if (input->PushKey(DIK_S))
+	{
+		position.z -= 0.55;
+	}*/
+
+
 	matView_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_));
 }
 void Camera::SetTarget(XMFLOAT3 pos)

@@ -38,8 +38,8 @@ bool Collision::Update(DirectX::XMFLOAT3 spherePos, DirectX::XMFLOAT3 sphereScal
 	//SphereVertex1の値を設定
 	sphereVertex1.c = spherePos;
 	sphereVertex1.r = sphereScale;
-	sphereVertex1.min = { spherePos.x - (sphereScale.x / 2) ,spherePos.y - (sphereScale.y),spherePos.z - (sphereScale.z / 2) };
-	sphereVertex1.max = { spherePos.x + (sphereScale.x / 2) ,spherePos.y + (sphereScale.y),spherePos.z + (sphereScale.z / 2) };
+	sphereVertex1.min = { spherePos.x - (sphereScale.x / 2) ,spherePos.y - (sphereScale.y / 2),spherePos.z - (sphereScale.z / 2) };
+	sphereVertex1.max = { spherePos.x + (sphereScale.x / 2) ,spherePos.y + (sphereScale.y / 2),spherePos.z + (sphereScale.z / 2) };
 
 	//円の中心座標が直方体の範囲内にある場合のベクトル
 	DirectX::XMFLOAT3 v{};

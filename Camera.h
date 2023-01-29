@@ -1,6 +1,7 @@
 #pragma once
 #include "DirectXMath.h"
 #include "Input.h"
+#include "DXInput.h"
 #include "WinApp.h"
 
 using namespace DirectX;
@@ -10,11 +11,13 @@ class Camera
 public:
 	//シングルトンインスタンス
 	static Camera* GetInstance();
+	static void SetInput(Input* input) { Camera::input = input; }
+	static void SetDXInput(DXInput* dxInput) { Camera::dxInput = dxInput; }
 	//インストラクタ デストラクタ
 	Camera();
 	~Camera();
 	//初期化
-	void Initialize(Input* input);
+	void Initialize();
 	//更新
 	void Update();
 	//ゲッターセッター
@@ -28,7 +31,10 @@ public:
 	XMMATRIX GetMatViewProjection() { return matView_ * matProjection_; };
 private:
 	//入力
-	Input* input_;
+	//キーボード
+	static Input* input;
+	//コントローラー
+	static DXInput* dxInput;
 	//射影変換
 	XMMATRIX matProjection_;
 	//ビュー変換行列
