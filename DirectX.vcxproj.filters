@@ -40,6 +40,15 @@
     <Filter Include="リソース ファイル\Shaders\SpriteShader">
       <UniqueIdentifier>{68e2456c-3c29-4446-922d-dbfc2ef37385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\3D">
+      <UniqueIdentifier>{9435ab47-2e46-460e-9ac2-8ad899992ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\3D">
+      <UniqueIdentifier>{f0483528-f78a-4c0b-a329-f4bdeac3fadb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Shaders\Shader">
+      <UniqueIdentifier>{6da236c3-6d7c-4c2d-9e98-1565aa0a904d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -78,6 +87,12 @@
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="3D\CubeModel.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\CubeObject3D.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameScene.h">
@@ -113,10 +128,19 @@
     <ClInclude Include="Camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="3D\CubeModel.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\CubeObject3D.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FbxHeader.hlsli">
       <Filter>リソース ファイル\Shaders\FbxShader</Filter>
+    </None>
+    <None Include="ShaderHeader.hlsli">
+      <Filter>リソース ファイル\Shaders\Shader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +149,12 @@
     </FxCompile>
     <FxCompile Include="FbxVertexShader.hlsl">
       <Filter>リソース ファイル\Shaders\FbxShader</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>リソース ファイル\Shaders\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>リソース ファイル\Shaders\Shader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

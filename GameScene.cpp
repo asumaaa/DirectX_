@@ -31,10 +31,31 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	FbxObject3D::SetCamera(camera_.get());
 	FbxObject3D::CreateGraphicsPipeline();
 
+	//fbxのオブジェクト
 	object1 = new FbxObject3D;
 	object1->Initialize();
 	object1->SetModel(model1);
 	object1->PlayAnimation();
+
+	//キューブの設定
+	//デバイスをセット
+	CubeObject3D::SetDevice(dxCommon_->GetDevice());
+	CubeObject3D::SetCamera(camera_.get());
+	CubeObject3D::SetInput(input_);
+	CubeObject3D::CreateGraphicsPipeline();
+	//モデルの設定
+	CubeModel* newCubeModel = new CubeModel();
+	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
+	cubeModel.reset(newCubeModel);
+	cubeModel->SetImageData({ 0.0f, 1.0f, 1.0f,1.0f });
+
+	//キューブオブジェクトの設定
+	CubeObject3D* newCubeObject = new CubeObject3D();
+	newCubeObject->Initialize();
+	cubeObject.reset(newCubeObject);
+	cubeObject->SetModel(cubeModel.get());
+	cubeObject->SetScale({ 30.0f,0.5f,30.0f });
+	cubeObject->SetPosition({ 0.0f,0.0f,0.0f });
 }
 
 void GameScene::Update()
@@ -42,6 +63,7 @@ void GameScene::Update()
 	camera_->Update();
 
 	object1->Update();
+	cubeObject->Update();
 
 	//コントローラー更新
 	dxInput->InputProcess();
@@ -50,4 +72,5 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	object1->Draw(dxCommon_->GetCommandList());
+	cubeObject->Draw(dxCommon_->GetCommandList());
 }
