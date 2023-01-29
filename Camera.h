@@ -54,7 +54,9 @@ private:
 	//裏表切り替わっている瞬間に立てるフラグ
 	bool changeMode = false;
 	//裏表を切り替えるタイマー
-	float changeModeTimer;
+	float changeModeTimer = 0.0f;
 	//裏表を切り替えるのにかかる時間
 	float changeModeTime = 60.0f;
+	//プレイヤー追尾状態の際のY座標
+	float changePosY = 10.0f;
 };

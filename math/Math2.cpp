@@ -51,3 +51,11 @@ int RNG(int min, int max, bool preciseMode)
 	} while (ret >= RAND_MAX - RAND_MAX % (max + 1 - min));
 	ret = ret % (max + 1 - min) + min;
 }
+
+float easeInOutQuart(float x) {
+	return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2;
+}
+
+float easeOutQuint(float x) {
+	return 1 - pow(1 - x, 5);
+}

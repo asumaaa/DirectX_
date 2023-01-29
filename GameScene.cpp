@@ -27,6 +27,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest", "Resources/white1x1.png");
+	/*stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");*/
 
 	//デバイスをセット
 	FbxObject3D::SetDevice(dxCommon_->GetDevice());
@@ -74,11 +75,39 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Player* newPlayer = new Player();
 	newPlayer->Initialize();
 	player.reset(newPlayer);
+
+	//障害物
+	/*Obstacle::SetDevice(dxCommon_->GetDevice());
+	Obstacle::SetCamera(camera_.get());*/
+	/*obstacle->SetModel(model1);*/
+	/*obstacle->SetPosition({10.0f,0.0f,0.0f});*/
+
 	//プレイヤーに当たり判定をセット
 	player->SetCollision(cubeObject->GetPosition(), cubeObject->GetScale());
 }
 
 void GameScene::Update()
+{
+	//コントローラー更新
+	dxInput->InputProcess();
+	//シーンごとの処理
+	(this->*Scene_[scene_])();
+}
+
+void GameScene::Draw()
+{
+	(this->*SceneDraw_[sceneDraw_])();
+}
+
+void GameScene::TitleUpdate()
+{
+}
+
+void GameScene::TitleDraw()
+{
+}
+
+void GameScene::GameUpdate()
 {
 	camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());
 	//カメラ更新
@@ -90,16 +119,29 @@ void GameScene::Update()
 	cubeObject->Update();
 	//プレイヤー更新
 	player->Update();
-
-	//コントローラー更新
-	dxInput->InputProcess();
+	//障害物更新
+	/*obstacle->Update();*/
 }
 
-void GameScene::Draw()
+void GameScene::GameDraw()
 {
 	/*object1->Draw(dxCommon_->GetCommandList());*/
 	//キューブ描画
 	cubeObject->Draw(dxCommon_->GetCommandList());
 	//プレイヤー描画
 	player->Draw(dxCommon_->GetCommandList());
+	//障害物描画
+	/*obstacle->Draw(dxCommon_->GetCommandList());*/
 }
+
+void (GameScene::* GameScene::Scene_[])() =
+{
+	&GameScene::TitleUpdate,
+	&GameScene::GameUpdate,
+};
+
+void (GameScene::* GameScene::SceneDraw_[])() =
+{
+	&GameScene::TitleDraw,
+	&GameScene::GameDraw,
+};

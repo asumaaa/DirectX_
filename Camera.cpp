@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "Math.h"
+#include "Math2.h"
 #define PI 3.14159265359
 
 Input* Camera::input = nullptr;
@@ -69,14 +70,50 @@ void Camera::PlayerAim(DirectX::XMFLOAT3 pos, int playerState)
 	//注視点をプレイヤーのx座標に合わせる
 	target_ = { pos.x,0,pos.z };
 
-	if (playerState == 0)
+	//前のフレームと現在のフレームで状態が違ったらフラグを立てる
+	if (playerState != prePlayerState)
 	{
-		eye_ = { pos.x,10,pos.z - 30 };
+		changeMode = true;
 	}
-	if (playerState == 1)
+
+	//changeMode==trueのとき
+	if (changeMode == true)
 	{
-		eye_ = { pos.x,-10,pos.z - 30 };
+		//タイマー開始
+		changeModeTimer += 1.0f;
+
+		/*easeInOutQuart(changeModeTimer / 60.0f);*/
+		//表から裏の場合
+		if (playerState == 1)
+		{
+			eye_.y = changePosY - ((changePosY * easeOutQuint(changeModeTimer / 60.0f))* 2);
+		}
+		//裏から表の場合
+		if (playerState == 0)
+		{
+			eye_.y = -changePosY + ((changePosY * easeOutQuint(changeModeTimer / 60.0f))*2);
+		}
+
+		//設定していた時間まで到達したらchangeMode解除
+		if (changeModeTimer >= changeModeTime)
+		{
+			changeMode = false;
+			changeModeTimer = 0;
+		}
+		
 	}
+
+	//プレイヤーの状態によって視点を変更
+	if (playerState == 0 && changeMode == false)
+	{
+		eye_ = { pos.x,changePosY,pos.z - 30 };
+	}
+	if (playerState == 1 && changeMode == false)
+	{
+		eye_ = { pos.x,-changePosY,pos.z - 30 };
+	}
+
+	//前のフレームの状態を取得
 	prePlayerState = playerState;
 }
 //void Camera::PlayerAim(DirectX::XMFLOAT3 pos, Player::State playerState)

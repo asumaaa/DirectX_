@@ -10,4 +10,9 @@ XMFLOAT3 vector3Normalize(XMFLOAT3 vector_);
 
 int RNG(int min, int max, bool preciseMode);
 
+float easeInOutQuart(float x);
+
+float easeOutQuint(float x);
+
+
 
