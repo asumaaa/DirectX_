@@ -72,6 +72,8 @@ void Player::UpdateCollision()
 		//めり込まなくなりまで加算
 		while (collision->Update(position0, scale0) == 1)
 		{
+			//めり込んだらプレイヤーの状態を変更
+			playerState = back;
 			position0.y += 0.002f;
 			if (collision->Update(position0, scale0) == 0)
 			{
@@ -91,6 +93,8 @@ void Player::UpdateCollision()
 		//めり込まなくなりまで加算
 		while (collision->Update(position1, scale1) == 1)
 		{
+			//めり込んだらプレイヤーの状態を変更
+			playerState = front;
 			position1.y -= 0.002f;
 			if (collision->Update(position1, scale1) == 0)
 			{
@@ -102,6 +106,23 @@ void Player::UpdateCollision()
 
 void Player::UpdateMove()
 {
+	//スペースキーでジャンプ
+	if (input->PushKey(DIK_SPACE) && groundFlag0 == true && playerState == front)
+	{
+		//接地フラグをfalseに
+		fallTimer0 = -1;
+		groundFlag0 = false;
+	}
+
+	//スペースキーでジャンプ
+	if (input->PushKey(DIK_SPACE) && groundFlag1 == true && playerState == back)
+	{
+		//接地フラグをfalseに
+		fallTimer1 = -1;
+		groundFlag1 = false;
+	}
+
+
 	//地面に接していない場合の落下処理(表のオブジェクト)
 	if (groundFlag0 == false)
 	{

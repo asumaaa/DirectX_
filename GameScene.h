@@ -43,5 +43,8 @@ private:
 
 	//プレイヤー
 	std::unique_ptr<Player> player;
+
+	//プレイヤーの状態のフラグ
+
 };
 

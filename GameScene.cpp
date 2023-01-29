@@ -80,6 +80,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 void GameScene::Update()
 {
+	camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());
+	//カメラ更新
 	camera_->Update();
 
 	//fBXオブジェクト更新

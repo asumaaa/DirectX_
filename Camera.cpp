@@ -35,6 +35,7 @@ void Camera::Initialize()
 
 void Camera::Update()
 {
+	//デバッグ用
 	/*if (input->PushKey(DIK_D))
 	{
 		position.x += 0.55;
@@ -42,7 +43,7 @@ void Camera::Update()
 	if (input->PushKey(DIK_A))
 	{
 		position.x -= 0.55;
-	}*/
+	}
 	if (input->PushKey(DIK_W))
 	{
 		eye_.y += 0.55;
@@ -51,7 +52,7 @@ void Camera::Update()
 	{
 		eye_.y -= 0.55;
 	}
-	/*if (input->PushKey(DIK_W))
+	if (input->PushKey(DIK_W))
 	{
 		position.z += 0.55;
 	}
@@ -63,6 +64,35 @@ void Camera::Update()
 
 	matView_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_));
 }
+void Camera::PlayerAim(DirectX::XMFLOAT3 pos, int playerState)
+{
+	//注視点をプレイヤーのx座標に合わせる
+	target_ = { pos.x,0,pos.z };
+
+	if (playerState == 0)
+	{
+		eye_ = { pos.x,10,pos.z - 30 };
+	}
+	if (playerState == 1)
+	{
+		eye_ = { pos.x,-10,pos.z - 30 };
+	}
+	prePlayerState = playerState;
+}
+//void Camera::PlayerAim(DirectX::XMFLOAT3 pos, Player::State playerState)
+//{
+//	//注視点をプレイヤーのx座標に合わせる
+//	target_ = { pos.x,0,pos.z };
+//
+//	if (playerState == Player::State::front)
+//	{
+//		eye_ = { pos.x,10,pos.z - 30 };
+//	}
+//	if (playerState == Player::State::back)
+//	{
+//		eye_ = { pos.x,-10,pos.z - 30 };
+//	}
+//}
 void Camera::SetTarget(XMFLOAT3 pos)
 {
 	target_ = pos;

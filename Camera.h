@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "DXInput.h"
 #include "WinApp.h"
+//#include "Player.h"
 
 using namespace DirectX;
 
@@ -20,6 +21,10 @@ public:
 	void Initialize();
 	//更新
 	void Update();
+	
+	//プレイヤーを追尾する処理(プレイヤーの座標,プレイヤーの状態)
+	void PlayerAim(DirectX::XMFLOAT3 pos, int playerState);
+
 	//ゲッターセッター
 	void SetTarget(XMFLOAT3 pos);
 	void SetEye(XMFLOAT3 pos);
@@ -42,4 +47,14 @@ private:
 	XMFLOAT3 eye_ = { 0, 20, -100 };
 	XMFLOAT3 target_ = { 0, 0, 0 };
 	XMFLOAT3 up_ = { 0, 1, 0 };
+
+	//プレイヤー追尾処理用の変数
+	//前のフレームのプレイヤーの状態を保存する変数
+	int prePlayerState;
+	//裏表切り替わっている瞬間に立てるフラグ
+	bool changeMode = false;
+	//裏表を切り替えるタイマー
+	float changeModeTimer;
+	//裏表を切り替えるのにかかる時間
+	float changeModeTime = 60.0f;
 };

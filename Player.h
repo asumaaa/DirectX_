@@ -44,6 +44,7 @@ public:
 	void SetCollision(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale);
 
 	//ゲッター
+	//変形行列
 	DirectX::XMFLOAT3 GetPosition0() { return position0; }
 	DirectX::XMFLOAT3 GetRotation0() { return rotation0; }
 	DirectX::XMFLOAT3 GetScale0() { return scale0; }
@@ -86,5 +87,18 @@ private:
 	//接地フラグ
 	bool groundFlag0 = false;
 	bool groundFlag1 = false;
+
+	//表裏の列挙型
+public:
+	enum State
+	{
+		front,	//表状態のとき
+		back,	//裏状態のとき
+	};
+	//ゲッター
+	State GetPlayerState() { return playerState; }
+private:
+	//プレイヤーの状態を表すフラグ
+	State playerState = front;
 };
 
