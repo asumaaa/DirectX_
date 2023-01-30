@@ -40,7 +40,7 @@ public:
 	{
 		DirectX::XMFLOAT3 pos;	//座標
 		DirectX::XMFLOAT3 normal;	//法線ベクトル
-		DirectX::XMFLOAT3 uv;	//uv座標
+		DirectX::XMFLOAT2 uv;	//uv座標
 		UINT boneIndex[MAX_BONE_INDICES];
 		float boneWeight[MAX_BONE_INDICES];
 	};
@@ -50,7 +50,7 @@ public:
 		//名前
 		std::string name;
 		//初期姿勢の逆行列
-		DirectX::XMMATRIX invInitalPose;
+		DirectX::XMMATRIX invInitialPose;
 		//クラスター
 		FbxCluster* fbxCluster;
 		//コンストラクタ

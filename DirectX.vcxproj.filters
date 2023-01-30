@@ -129,6 +129,9 @@
     <ClCompile Include="Obstacle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameScene.h">
@@ -194,6 +197,9 @@
     <ClInclude Include="Obstacle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FbxHeader.hlsli">
@@ -201,6 +207,9 @@
     </None>
     <None Include="ShaderHeader.hlsli">
       <Filter>リソース ファイル\Shaders\Shader</Filter>
+    </None>
+    <None Include="SpriteHeader.hlsli">
+      <Filter>リソース ファイル\Shaders\SpriteShader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +224,12 @@
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
       <Filter>リソース ファイル\Shaders\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SpritePixelShader.hlsl">
+      <Filter>リソース ファイル\Shaders\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="SpriteVertexShader.hlsl">
+      <Filter>リソース ファイル\Shaders\SpriteShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

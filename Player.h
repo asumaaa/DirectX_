@@ -70,7 +70,7 @@ private:
 	std::list<std::unique_ptr<Collision>> collisions;
 
 	//ïœå`çsóÒ
-	DirectX::XMFLOAT3 position0 = {0.0f,10.0f,0.0f};
+	DirectX::XMFLOAT3 position0 = {0.0f,0.0f,0.0f};
 	DirectX::XMFLOAT3 rotation0 = {0.0f,0.0f,0.0f};
 	DirectX::XMFLOAT3 scale0 = {3.0f,3.0f,3.0f};
 	DirectX::XMFLOAT3 position1;

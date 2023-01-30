@@ -13,6 +13,7 @@
 #include "Camera.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "Sprite.h"
 
 class GameScene
 {
@@ -58,6 +59,12 @@ private:
 
 	//障害物
 	/*std::unique_ptr<Obstacle>obstacle;*/
+
+	//スプライト
+	Sprite* sprite = new Sprite;
+	Sprite titleSprite;	//title.png
+	//スプライト共通データ生成
+	SpriteCommon spriteCommon;
 
 	//シーン
 	enum class Scene

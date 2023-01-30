@@ -351,10 +351,8 @@ std::string FbxLoader::ExtractFileName(const std::string& path)
 
 void FbxLoader::ConvertMatrixFromFbx(DirectX::XMMATRIX* dst, const FbxAMatrix& src)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
             dst->r[i].m128_f32[j] = (float)src.Get(i, j);
         }
     }
@@ -363,9 +361,9 @@ void FbxLoader::ConvertMatrixFromFbx(DirectX::XMMATRIX* dst, const FbxAMatrix& s
 void FbxLoader::ParseSkin(FbxModel* model, FbxMesh* fbxMesh)
 {
     //スキニング情報
-    FbxSkin* fbxSkin = static_cast<FbxSkin*>(fbxMesh->GetDeformer(FbxDeformer::eSkin));
+    FbxSkin* fbxSkin = static_cast<FbxSkin*>(fbxMesh->GetDeformer(0,FbxDeformer::eSkin));
     //スキニング情報がなければ終了
-    if (fbxSkin == nullptr)
+    if (fbxSkin/* == nullptr*/)
     {
         //各頂点について処理
         for (int i = 0; i < model->vertices.size(); i++)
@@ -395,14 +393,14 @@ void FbxLoader::ParseSkin(FbxModel* model, FbxMesh* fbxMesh)
         FbxModel::Bone& bone = bones.back();
         //自作ボーンとFBXのボーンを紐づける
         bone.fbxCluster = fbxCluster;
-        //FBXぶから初期姿勢行列を取得する
+        //FBXから初期姿勢行列を取得する
         FbxAMatrix fbxMat;
         fbxCluster->GetTransformLinkMatrix(fbxMat);
         //XMMatrix型に変換する
         XMMATRIX initialPose;
         ConvertMatrixFromFbx(&initialPose, fbxMat);
         //初期姿勢行列の逆行列を得る
-        bone.invInitalPose = XMMatrixInverse(nullptr, initialPose);
+        bone.invInitialPose = XMMatrixInverse(nullptr, initialPose);
     }
 
     //ボーン番号とスキンウェイトのペア

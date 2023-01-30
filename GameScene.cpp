@@ -20,13 +20,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Camera* newCamera = new Camera();
 	newCamera->Initialize();
 	camera_.reset(newCamera);
-	camera_->SetTarget({ 0,0,0 });
-	camera_->SetEye({ 0, 0, -50 });
+	camera_->SetTarget({ 0,100,0 });
+	camera_->SetEye({ 0, 0, -500 });
 
 	//FBX読み込み
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest", "Resources/white1x1.png");
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("PlayerModelWalk", "Resources/white1x1.png");
 	/*stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");*/
 
 	//デバイスをセット
@@ -38,6 +38,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	object1 = new FbxObject3D;
 	object1->Initialize();
 	object1->SetModel(model1);
+	object1->SetScale({ 0.1,0.1,0.1 });
 	object1->PlayAnimation();
 
 	//キューブの設定
@@ -84,6 +85,15 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 	//プレイヤーに当たり判定をセット
 	player->SetCollision(cubeObject->GetPosition(), cubeObject->GetScale());
+
+
+	//スプライト初期化処理
+	spriteCommon = sprite->SpriteCommonCreate(dxCommon_->GetDevice(), 1280, 720);
+	sprite->SpriteCommonLoadTexture(spriteCommon, 0, L"Resources/title.png", dxCommon_->GetDevice());
+	titleSprite.SpriteCreate(dxCommon_->GetDevice(), 1280, 720);
+	titleSprite.SetTexNumber(0);
+	titleSprite.SetPosition(XMFLOAT3(200, 100, 0));
+	titleSprite.SetScale(XMFLOAT2(414 * 2.2, 54 * 2.2));
 }
 
 void GameScene::Update()
@@ -101,19 +111,33 @@ void GameScene::Draw()
 
 void GameScene::TitleUpdate()
 {
+	if (input_->PushKey(DIK_SPACE))
+	{
+		scene_ = static_cast<size_t>(Scene::Game);
+		sceneDraw_ = static_cast<size_t>(SceneDraw::GameDraw);
+	}
+
+	//タイトルのスプライト更新
+	titleSprite.SpriteTransferVertexBuffer(titleSprite);
+	titleSprite.SpriteUpdate(titleSprite, spriteCommon);
 }
 
 void GameScene::TitleDraw()
 {
+	//スプライト共通コマンド
+	sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
+
+	titleSprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), titleSprite.vbView);
 }
 
 void GameScene::GameUpdate()
 {
-	camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());
+	/*camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());*/
 	//カメラ更新
 	camera_->Update();
 
 	//fBXオブジェクト更新
+	/*object1->PlayAnimation();*/
 	object1->Update();
 	//キューブオブジェクト更新
 	cubeObject->Update();
@@ -125,7 +149,7 @@ void GameScene::GameUpdate()
 
 void GameScene::GameDraw()
 {
-	/*object1->Draw(dxCommon_->GetCommandList());*/
+	object1->Draw(dxCommon_->GetCommandList());
 	//キューブ描画
 	cubeObject->Draw(dxCommon_->GetCommandList());
 	//プレイヤー描画

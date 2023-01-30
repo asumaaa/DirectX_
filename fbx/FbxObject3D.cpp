@@ -53,7 +53,6 @@ void FbxObject3D::Initialize()
 void FbxObject3D::Update()
 {
 	HRESULT result;
-
 	//アニメーション
 	if (isPlay)
 	{
@@ -74,13 +73,13 @@ void FbxObject3D::Update()
 	for (int i = 0; i < bones.size(); i++)
 	{
 		//今の姿勢行列
-		XMMATRIX matCurrentPose;
+		XMMATRIX matCurrentPose = XMMatrixIdentity();
 		//今の姿勢行列を取得
 		FbxAMatrix fbxCurrentPose = bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime);
 		//XMMATRIX1に変換
 		FbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
 		//合成してスキニング行列に
-		constMapSkin->bones[i] = bones[i].invInitalPose * matCurrentPose;
+		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
 	}
 	constBuffSkin->Unmap(0, nullptr);
 
@@ -113,40 +112,11 @@ void FbxObject3D::Update()
 	if (SUCCEEDED(result))
 	{
 		constMap->viewproj = matViewProjection;
-		constMap->world = modelTransform * matWorld;
+		constMap->world = matWorld;
 		constMap->cameraPos = cameraPos;
 		constBuffTransform->Unmap(0, nullptr);
 	}
 
-	////アニメーション
-	//if (isPlay)
-	//{
-	//	//1フレーム進める
-	//	currentTime += frameTime;
-	//	//最後まで再生したら先頭に戻す
-	//	if (currentTime > endTime)
-	//	{
-	//		currentTime = startTime;
-	//	}
-	//}
-
-	////ボーン配列
-	//std::vector<FbxModel::Bone>& bones = model->GetBones();
-	////定数バッファへデータ転送
-	//ConstBufferDataSkin* constMapSkin = nullptr;
-	//result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
-	//for (int i = 0; i < bones.size(); i++)
-	//{
-	//	//今の姿勢行列
-	//	XMMATRIX matCurrentPose;
-	//	//今の姿勢行列を取得
-	//	FbxAMatrix fbxCurrentPose = bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime);
-	//	//XMMATRIX1に変換
-	//	FbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
-	//	//合成してスキニング行列に
-	//	constMapSkin->bones[i] = bones[i].invInitalPose * matCurrentPose;
-	//}
-	//constBuffSkin->Unmap(0, nullptr);
 }
 
 
