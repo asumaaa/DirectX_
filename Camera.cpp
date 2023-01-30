@@ -106,11 +106,11 @@ void Camera::PlayerAim(DirectX::XMFLOAT3 pos, int playerState)
 	//プレイヤーの状態によって視点を変更
 	if (playerState == 0 && changeMode == false)
 	{
-		eye_ = { pos.x,changePosY,pos.z - 30 };
+		eye_ = { pos.x,changePosY,pos.z - 50 };
 	}
 	if (playerState == 1 && changeMode == false)
 	{
-		eye_ = { pos.x,-changePosY,pos.z - 30 };
+		eye_ = { pos.x,-changePosY,pos.z - 50 };
 	}
 
 	//前のフレームの状態を取得

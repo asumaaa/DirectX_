@@ -11,53 +11,113 @@ DXInput* Player::dxInput = nullptr;
 
 void Player::Initialize()
 {
-	Metaball* newMetaball0 = new Metaball();
-	newMetaball0->Initialize();
-	newMetaball0->SetInput(input);
-	newMetaball0->SetImageData({ 1.0, 1.0, 1.0, 1 });
-	metaball0.reset(newMetaball0);
+	//オブジェクト初期化
+	object0 = new FbxObject3D;
+	object0->Initialize();
+	object0->SetModel(model);
+	object0->PlayAnimation();
 
-	Metaball* newMetaball1 = new Metaball();
-	newMetaball1->Initialize();
-	newMetaball1->SetInput(input);
-	newMetaball1->SetImageData({ 1.0, 1.0, 1.0, 1 });
-	metaball1.reset(newMetaball1);
+	object1 = new FbxObject3D;
+	object1->Initialize();
+	object1->SetModel(model);
+	object1->PlayAnimation();
 
 	//Y座標を逆にして座標設定
-	position1 = { position0.x,-position0.y - 10,position0.z };
-	rotation1 = rotation0;
+	position1 = { position0.x,		-position0.y - 10,	position0.z };
+	rotation1 = { rotation0.x + (float)PI,	rotation0.y + (float)PI,		rotation0.y};
 	scale1 = scale0;
+
+	//ヒットボックスの設定
+	CubeObject3D* newCubeObject = new CubeObject3D();
+	newCubeObject->Initialize();
+	cubeObject0.reset(newCubeObject);
+	cubeObject0->SetModel(cubeModel);
+	CubeObject3D* newCubeObject1 = new CubeObject3D();
+	newCubeObject1->Initialize();
+	cubeObject1.reset(newCubeObject1);
+	cubeObject1->SetModel(cubeModel);
+
+	hitboxPosition0.x = position0.x;
+	hitboxPosition0.y = position0.y + 6;
+	hitboxPosition0.z = position0.z;
+	hitboxRotation0 = { 0.0f,0.0f,0.0f };
+	hitboxScale0 = { 3.0f,12.0f,3.0f };
+
+	hitboxPosition1.x = position1.x;
+	hitboxPosition1.y = position1.y - 6;
+	hitboxPosition1.z = position1.z;
+	hitboxRotation1 = hitboxRotation0;
+	hitboxScale1 = hitboxScale0;
 }
 
 void Player::Update()
 {
-	//当たり判定更新
-	UpdateCollision();
 	//移動更新
 	UpdateMove();
+	//当たり判定更新
+	UpdateCollision();
 
-	//変形行列反映
-	metaball0->SetPosition(position0);
-	metaball0->SetScale(scale0);
-	metaball0->SetRotation(rotation0);
-	metaball1->SetPosition(position1);
-	metaball1->SetScale(scale1);
-	metaball1->SetRotation(rotation1);
+	//hitboxの座標調整
+	hitboxPosition0.x = position0.x;
+	hitboxPosition0.y = position0.y + 6;
+	hitboxPosition0.z = position0.z;
+
+	hitboxPosition1.x = position1.x;
+	hitboxPosition1.y = position1.y - 6;
+	hitboxPosition1.z = position1.z;
 
 	//オブジェクト更新
-	metaball0->Update();
-	metaball1->Update();
+	object0->SetPosition(position0);
+	object0->SetScale(scale0);
+	object0->SetRotation(rotation0);
+	object0->Update();
+
+	object1->SetPosition(position1);
+	object1->SetScale(scale1);
+	object1->SetRotation(rotation1);
+	object1->Update();
+
+	cubeObject0->SetPosition(hitboxPosition0);
+	cubeObject0->SetScale(hitboxScale0);
+	cubeObject0->SetRotation(hitboxRotation0);
+	cubeObject0->Update();
+
+	cubeObject1->SetPosition(hitboxPosition1);
+	cubeObject1->SetScale(hitboxScale1);
+	cubeObject1->SetRotation(hitboxRotation1);
+	cubeObject1->Update();
 }
 
 void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 {
-	metaball0->Draw(cmdList);
-	metaball1->Draw(cmdList);
+	object0->Draw(cmdList);
+	object1->Draw(cmdList);
+	cubeObject0->Draw(cmdList);
+	cubeObject1->Draw(cmdList);
 }
 
 void Player::UpdateCollision()
 {
-	for (std::unique_ptr<Collision>& collision : collisions)
+
+	//-----------オブジェクトとの当たり判定---------
+	for (std::unique_ptr<Collision>& collision : collisionsObstacle)
+	{
+
+		//めり込まなくなりまで加算
+		while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+		{
+			//めり込んだらプレイヤーの状態を変更
+			position0.x -= 0.0002f;
+			hitboxPosition0.x -= 0.0002f;
+			if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+			{
+				break;
+			}
+		}
+	}
+
+	//-----------床との当たり判定-----------------
+	for (std::unique_ptr<Collision>& collision : collisionsFloor)
 	{
 		//表のオブジェクト
 		if (collision->Update(position0, scale0) == 1)
@@ -106,8 +166,20 @@ void Player::UpdateCollision()
 
 void Player::UpdateMove()
 {
+
+	//左ステックの変数
+	float x = dxInput->GamePad.state.Gamepad.sThumbLY / (32767.0f) * (PI / 90.0f);
+	float y = dxInput->GamePad.state.Gamepad.sThumbLX / (32767.0f) * (PI / 90.0f);
+	//スティックで得た変数を代入
+	velocity0.z = x * 10;
+	velocity0.x = y * 10;
+	velocity1.z = x * 10;
+	velocity1.x = y * 10;
+
+
+	//--------------落下、ジャンプ----------------
 	//スペースキーでジャンプ
-	if (input->PushKey(DIK_SPACE) && groundFlag0 == true && playerState == front)
+	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A  && groundFlag0 == true && playerState == front)
 	{
 		//接地フラグをfalseに
 		fallTimer0 = -1;
@@ -115,7 +187,7 @@ void Player::UpdateMove()
 	}
 
 	//スペースキーでジャンプ
-	if (input->PushKey(DIK_SPACE) && groundFlag1 == true && playerState == back)
+	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A && groundFlag1 == true && playerState == back)
 	{
 		//接地フラグをfalseに
 		fallTimer1 = -1;
@@ -149,11 +221,25 @@ void Player::UpdateMove()
 		position1.y += fallVelocity1.y;
 		position1.z += fallVelocity1.z;
 	}
+
+	position0.x += velocity0.x;
+	position0.y += velocity0.y;
+	position0.z += velocity0.z;
+	position1.x += velocity1.x;
+	position1.y += velocity1.y;
+	position1.z += velocity1.z;
 }
 
-void Player::SetCollision(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)
+void Player::SetCollisionObstacle(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)
 {
 	std::unique_ptr<Collision>newCollision = std::make_unique<Collision>();
 	newCollision->SetObject(position, scale);
-	collisions.push_back(std::move(newCollision));
+	collisionsObstacle.push_back(std::move(newCollision));
+}
+
+void Player::SetCollisionFloor(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)
+{
+	std::unique_ptr<Collision>newCollision = std::make_unique<Collision>();
+	newCollision->SetObject(position, scale);
+	collisionsFloor.push_back(std::move(newCollision));
 }

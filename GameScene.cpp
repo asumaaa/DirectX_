@@ -1,5 +1,10 @@
 #include "GameScene.h"
 #include "FbxLoader.h"
+#include<fstream>
+#include "sstream"
+#include "stdio.h"
+#include "string.h"
+#include "vector"
 
 #define PI 3.1415
 
@@ -16,6 +21,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	this->dxCommon_ = dxCommon;
 	this->input_ = input;
 
+#pragma region カメラ初期化
+
 	//カメラ初期化
 	Camera::SetInput(input_);
 	Camera::SetDXInput(dxInput);
@@ -25,24 +32,23 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	camera_->SetTarget({ 0,0,0 });
 	camera_->SetEye({ 0, 0, -50 });
 
+#pragma endregion
+
+#pragma region FBX読み込み
 	//FBX読み込み
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "Resources/white1x1.png");
-	/*stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");*/
+	stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");
 
+#pragma endregion
+
+#pragma region オブジェクトにデバイスをセット
+	
 	//デバイスをセット
 	FbxObject3D::SetDevice(dxCommon_->GetDevice());
 	FbxObject3D::SetCamera(camera_.get());
 	FbxObject3D::CreateGraphicsPipeline();
-
-	//fbxのオブジェクト
-	object1 = new FbxObject3D;
-	object1->Initialize();
-	object1->SetModel(model1);
-	object1->SetScale({ 0.01,0.01,0.01 });
-	object1->SetRotation({ 0.0,0.0,0.0 });
-	object1->PlayAnimation();
 
 	//キューブの設定
 	//デバイスをセット
@@ -50,25 +56,42 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	CubeObject3D::SetCamera(camera_.get());
 	CubeObject3D::SetInput(input_);
 	CubeObject3D::CreateGraphicsPipeline();
-	//モデルの設定
-	CubeModel* newCubeModel = new CubeModel();
-	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
-	cubeModel.reset(newCubeModel);
-	cubeModel->SetImageData({ 0.7f, 0.3f, 0.3f,0.1f });
-
-	//キューブオブジェクトの設定
-	CubeObject3D* newCubeObject = new CubeObject3D();
-	newCubeObject->Initialize();
-	cubeObject.reset(newCubeObject);
-	cubeObject->SetModel(cubeModel.get());
-	cubeObject->SetScale({ 30.0f,0.5f,30.0f });
-	cubeObject->SetPosition({ 0.0f,0.0f,0.0f });
 
 	//メタボール
 	//デバイスをセット
 	Metaball::SetDevice(dxCommon_->GetDevice());
 	Metaball::SetCamera(camera_.get());
 	Metaball::CreateGraphicsPipeline();
+
+	//障害物
+	Obstacle::SetDevice(dxCommon_->GetDevice());
+	Obstacle::SetCamera(camera_.get());
+
+#pragma endregion
+
+#pragma region キューブモデルの設定
+
+	//モデルの設定
+	CubeModel* newCubeModel = new CubeModel();
+	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
+	cubeModel.reset(newCubeModel);
+	hitBoxModel.reset(newCubeModel);
+	//床のモデル
+	cubeModel->SetImageData({ 1.0f, 0.0f, 0.0f,1.0f });
+	//hitboxのモデル
+	hitBoxModel->SetImageData({ 1.0f,0.5f,0.5f,1.0f });
+
+#pragma endregion
+
+	//キューブオブジェクトの設定
+	CubeObject3D* newCubeObject = new CubeObject3D();
+	newCubeObject->Initialize();
+	cubeObject.reset(newCubeObject);
+	cubeObject->SetModel(cubeModel.get());
+	cubeObject->SetScale({ 60.0f,0.5f,60.0f });
+	cubeObject->SetPosition({ 0.0f,0.0f,0.0f });
+
+#pragma region プレイヤー初期化
 
 	//プレイヤーセット
 	Player::SetDevice(dxCommon_->GetDevice());
@@ -77,17 +100,63 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Player::SetDXInput(dxInput);
 	//プレイヤー初期化
 	Player* newPlayer = new Player();
+	newPlayer->SetModel(model1);
+	newPlayer->SetCubeModel(hitBoxModel.get());
 	newPlayer->Initialize();
 	player.reset(newPlayer);
 
-	//障害物
-	/*Obstacle::SetDevice(dxCommon_->GetDevice());
-	Obstacle::SetCamera(camera_.get());*/
-	/*obstacle->SetModel(model1);*/
-	/*obstacle->SetPosition({10.0f,0.0f,0.0f});*/
+#pragma endregion
+
+#pragma region 障害物初期化
+
+	//ファイル読み込み
+	std::stringstream obstaclePosList;	//文字列
+	std::vector<DirectX::XMFLOAT3>obstaclePos;
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/obstacleTutorial.csv");
+	//ファイルの内容をコピー
+	obstaclePosList << file.rdbuf();
+	//ファイルを閉じる
+	file.close();
+
+	std::string line;
+
+	//ファイルから障害物の場所を読み込み
+	while (getline(obstaclePosList, line, '{'))
+	{
+		//1行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+		std::string word1;
+		std::string word2;
+		std::string word3;
+		//カンマ区切りで先頭文字列を取得
+		getline(line_stream, word1, ',');
+		getline(line_stream, word2, ',');
+		getline(line_stream, word3, ',');
+		DirectX::XMFLOAT3 pos(atoi(word1.c_str()), atoi(word2.c_str()), atoi(word3.c_str()));
+		obstaclePos.push_back(pos);
+	}
+	//障害物初期化
+	for (int i = 1; i <= obstacleVal; i++)
+	{
+		std::unique_ptr<Obstacle>newObstacle = std::make_unique<Obstacle>();
+		newObstacle->SetModel(stoneModel);
+		newObstacle->SetCubeModel(hitBoxModel.get());
+		//ファイル読み込みで得た座標を代入
+		newObstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z});
+		newObstacle->Initialize();
+		obstacles.push_back(std::move(newObstacle));
+	}
+
+#pragma endregion
 
 	//プレイヤーに当たり判定をセット
-	player->SetCollision(cubeObject->GetPosition(), cubeObject->GetScale());
+	player->SetCollisionFloor(cubeObject->GetPosition(), cubeObject->GetScale());	//床
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
+	}
 
 
 	//スプライト初期化処理
@@ -135,30 +204,77 @@ void GameScene::TitleDraw()
 
 void GameScene::GameUpdate()
 {
-	/*camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());*/
+	camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());
 	//カメラ更新
 	camera_->Update();
 
-	//fBXオブジェクト更新
-	/*object1->PlayAnimation();*/
-	object1->Update();
+	//スペースキーでファイル読み込み
+	LoadCsv();
+
 	//キューブオブジェクト更新
 	cubeObject->Update();
 	//プレイヤー更新
 	player->Update();
 	//障害物更新
-	/*obstacle->Update();*/
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		obstacle->Update();
+	}
 }
 
 void GameScene::GameDraw()
 {
-	object1->Draw(dxCommon_->GetCommandList());
 	//キューブ描画
 	cubeObject->Draw(dxCommon_->GetCommandList());
 	//プレイヤー描画
 	player->Draw(dxCommon_->GetCommandList());
 	//障害物描画
-	/*obstacle->Draw(dxCommon_->GetCommandList());*/
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		obstacle->Draw(dxCommon_->GetCommandList());
+	}
+}
+
+void GameScene::LoadCsv()
+{
+	if (input_->TriggerKey(DIK_SPACE))
+	{
+		//ファイル読み込み
+		std::stringstream obstaclePosList;	//文字列
+		std::vector<DirectX::XMFLOAT3>obstaclePos;
+		//ファイルを開く
+		std::ifstream file;
+		file.open("Resources/obstacleTutorial.csv");
+		//ファイルの内容をコピー
+		obstaclePosList << file.rdbuf();
+		//ファイルを閉じる
+		file.close();
+
+		std::string line;
+
+		//ファイルから障害物の場所を読み込み
+		while (getline(obstaclePosList, line, '{'))
+		{
+			//1行分の文字列をストリームに変換して解析しやすくする
+			std::istringstream line_stream(line);
+			std::string word1;
+			std::string word2;
+			std::string word3;
+			//カンマ区切りで先頭文字列を取得
+			getline(line_stream, word1, ',');
+			getline(line_stream, word2, ',');
+			getline(line_stream, word3, ',');
+			DirectX::XMFLOAT3 pos(atoi(word1.c_str()), atoi(word2.c_str()), atoi(word3.c_str()));
+			obstaclePos.push_back(pos);
+		}
+
+		int i = 1;
+		for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+		{
+			obstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z });
+			i++;
+		}
+	}
 }
 
 void (GameScene::* GameScene::Scene_[])() =

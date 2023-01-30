@@ -33,6 +33,9 @@ public:
 	void GameUpdate();
 	void GameDraw();
 
+	//スペースキーでファイル読み込みを実行する関数
+	void LoadCsv();
+
 	//メンバ変数
 private:
 	//デバイスとinput
@@ -45,20 +48,24 @@ private:
 
 	//fbx
 	FbxModel* model1 = nullptr;
-	FbxObject3D* object1 = nullptr;
 
 	//岩のモデル
-	/*FbxModel* stoneModel = nullptr;*/
+	FbxModel* stoneModel = nullptr;
 
 	//キューブ
 	std::unique_ptr<CubeModel> cubeModel;
 	std::unique_ptr<CubeObject3D> cubeObject;
 
+	//キューブ(hitbox用)
+	std::unique_ptr<CubeModel> hitBoxModel;
+
 	//プレイヤー
 	std::unique_ptr<Player> player;
 
 	//障害物
-	/*std::unique_ptr<Obstacle>obstacle;*/
+	std::list<std::unique_ptr<Obstacle>> obstacles;
+	//障害物の数
+	size_t obstacleVal = 4;
 
 	//スプライト
 	Sprite* sprite = new Sprite;
