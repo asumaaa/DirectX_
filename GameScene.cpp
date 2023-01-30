@@ -1,6 +1,8 @@
 #include "GameScene.h"
 #include "FbxLoader.h"
 
+#define PI 3.1415
+
 GameScene::GameScene()
 {
 }
@@ -20,13 +22,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Camera* newCamera = new Camera();
 	newCamera->Initialize();
 	camera_.reset(newCamera);
-	camera_->SetTarget({ 0,100,0 });
-	camera_->SetEye({ 0, 0, -500 });
+	camera_->SetTarget({ 0,0,0 });
+	camera_->SetEye({ 0, 0, -50 });
 
 	//FBX読み込み
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
 	//モデル名を指定してファイル読み込み
-	model1 = FbxLoader::GetInstance()->LoadModelFromFile("PlayerModelWalk", "Resources/white1x1.png");
+	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "Resources/white1x1.png");
 	/*stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");*/
 
 	//デバイスをセット
@@ -38,7 +40,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	object1 = new FbxObject3D;
 	object1->Initialize();
 	object1->SetModel(model1);
-	object1->SetScale({ 0.1,0.1,0.1 });
+	object1->SetScale({ 0.01,0.01,0.01 });
+	object1->SetRotation({ 0.0,0.0,0.0 });
 	object1->PlayAnimation();
 
 	//キューブの設定
