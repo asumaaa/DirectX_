@@ -22,6 +22,9 @@ public:
 	//更新
 	void Update();
 	
+
+	//タイトル、ステージセレクトの挙動
+	void StageSelect(DirectX::XMFLOAT3 pos);
 	//プレイヤーを追尾する処理(プレイヤーの座標,プレイヤーの状態)
 	void PlayerAim(DirectX::XMFLOAT3 pos, int playerState);
 

@@ -14,6 +14,10 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "Sprite.h"
+#include "Goal.h"
+#include "key.h"
+#include "Floor.h"
+#include "TextObject.h"
 
 class GameScene
 {
@@ -33,8 +37,16 @@ public:
 	void GameUpdate();
 	void GameDraw();
 
+	//シーンごとのセット関数
+	//タイトルをセット
+	void SetTitle();
+	//チュートリアルをセット
+	void SetTutorial();
+	void SetStage1();
+
 	//スペースキーでファイル読み込みを実行する関数
-	void LoadCsv(const wchar_t* fileName);
+	void LoadCsv(const wchar_t* fileName, int obstacleVal);
+	void DebugLoadCsv(const wchar_t* fileName,int obstacleVal);
 
 	//メンバ変数
 private:
@@ -46,30 +58,55 @@ private:
 	//カメラ
 	std::unique_ptr<Camera> camera_;
 
+	//------------モデル関連-------------
 	//fbx
 	FbxModel* model1 = nullptr;
-
 	//岩のモデル
 	FbxModel* stoneModel = nullptr;
+	//ゴールのモデル
+	FbxModel* goalModel = nullptr;
+	//鍵のモデル
+	FbxModel* keyModel = nullptr;
+
+	//ステージとかタイトルのモデル
+	//タイトル
+	FbxModel* titleModel = nullptr;
+	//stage1
+	FbxModel* stage1Model = nullptr;
 
 	//キューブ
 	std::unique_ptr<CubeModel> cubeModel;
-	std::unique_ptr<CubeObject3D> cubeObject;
+	/*std::unique_ptr<CubeObject3D> cubeObject;*/
 
 	//キューブ(hitbox用)
 	std::unique_ptr<CubeModel> hitBoxModel;
 
+	//----------自作クラス---------
 	//プレイヤー
 	std::unique_ptr<Player> player;
 
 	//障害物
 	std::list<std::unique_ptr<Obstacle>> obstacles;
 	//障害物の数
-	size_t obstacleVal = 4;
+	size_t obstacleVal = 50;
+
+	//ゴール
+	std::unique_ptr<Goal>goal;
+	//鍵
+	std::unique_ptr<Key>key;
+	//床
+	std::unique_ptr<Floor>floor;
+
+	//テキストのオブジェクト
+	std::list<std::unique_ptr<TextObject>>textObjects;
+	size_t textObjectVol = 2;
+
+	//---------------------------
 
 	//スプライト
 	Sprite* sprite = new Sprite;
 	Sprite titleSprite;	//title.png
+	Sprite keySprite;	//key.png
 	//スプライト共通データ生成
 	SpriteCommon spriteCommon;
 
@@ -81,6 +118,8 @@ private:
 	};
 	//シーン	最初がタイトル
 	size_t scene_ = static_cast<size_t>(Scene::Title);
+	//前のフレームのシーン
+	size_t preScene_ = static_cast<size_t>(Scene::Title);
 	//メンバ関数のポインタテーブル
 	static void (GameScene::* Scene_[])();
 
@@ -109,5 +148,10 @@ private:
 	Stage stage = Stage::Title;
 	//前のフレームのステージ
 	Stage preStage = Stage::Title;
+
+	//ステージごとの障害物の数
+	//tutorial
+	size_t tutorialObstacleVal = 3;
+	size_t stage1ObstacleVal = 5;
 };
 

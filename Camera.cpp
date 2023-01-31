@@ -65,6 +65,11 @@ void Camera::Update()
 
 	matView_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_));
 }
+void Camera::StageSelect(DirectX::XMFLOAT3 pos)
+{
+	target_ = { pos.x,30,pos.z };
+	eye_ = { pos.x,20,-100 };
+}
 void Camera::PlayerAim(DirectX::XMFLOAT3 pos, int playerState)
 {
 	//注視点をプレイヤーのx座標に合わせる

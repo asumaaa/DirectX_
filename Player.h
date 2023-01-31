@@ -35,6 +35,7 @@ public:
 	void SetCubeModel(CubeModel* model) { this->cubeModel = model; }
 
 	//シーンごとのセット
+	void SetTitle();
 	void SetTutorial();
 
 	//当たり判定更新
@@ -53,6 +54,10 @@ public:
 	//当たり判定セット
 	void SetCollisionFloor(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale);
 	void SetCollisionObstacle(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale);
+	void SetCollisionKey(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale);
+	void SetCollisionGoal(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale);
+	//当たり判定をクリアする関数(ステージ変わる毎に呼ぶ)
+	void ClearCollision();
 
 	//ゲッター
 	//変形行列
@@ -70,6 +75,11 @@ public:
 	DirectX::XMFLOAT3 GetHitboxPosition1() { return hitboxPosition1; }
 	DirectX::XMFLOAT3 GetHitboxRotation1() { return hitboxRotation1; }
 	DirectX::XMFLOAT3 GetHitboxScale1() { return hitboxScale1; }
+
+	//鍵のフラグ
+	bool GetKeyFlag() { return keyFlag; }
+	//ゴールのフラグ
+	bool GetGoalFlag() { return goalFlag; }
 
 	//メンバ変数
 private:
@@ -96,6 +106,8 @@ private:
 	//当たり判定
 	std::list<std::unique_ptr<Collision>> collisionsFloor;
 	std::list<std::unique_ptr<Collision>> collisionsObstacle;
+	std::list<std::unique_ptr<Collision>> collisionsKey;
+	std::list<std::unique_ptr<Collision>> collisionsGoal;
 
 	//変形行列
 	DirectX::XMFLOAT3 position0 = {0.0f,0.0f,0.0f};
@@ -121,6 +133,9 @@ private:
 	//落下ベクトル
 	XMFLOAT3 fallVelocity0 = { 0,0,0 };
 	XMFLOAT3 fallVelocity1 = { 0,0,0 };
+	//向きベクトル
+	XMFLOAT3 playerDirection0 = { 0,0,0 };
+	XMFLOAT3 playerDirection1 = { rotation0.x + 3.1415f,	rotation0.y +3.1415f,		rotation0.y };
 	//落下タイマー
 	float fallTimer0 = 0.0f;
 	float fallTimer1 = 0.0f;
@@ -140,5 +155,8 @@ public:
 private:
 	//プレイヤーの状態を表すフラグ
 	State playerState = front;
+	//鍵のフラグ
+	bool keyFlag = false;
+	bool goalFlag = false;
 };
 

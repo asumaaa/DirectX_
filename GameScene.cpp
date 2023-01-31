@@ -40,6 +40,10 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	//モデル名を指定してファイル読み込み
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "Resources/white1x1.png");
 	stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");
+	goalModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/beast.png");
+	keyModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/key.png");
+	titleModel = FbxLoader::GetInstance()->LoadModelFromFile("title", "Resources/white1x1.png");
+	stage1Model = FbxLoader::GetInstance()->LoadModelFromFile("stage1", "Resources/white1x1.png");
 
 #pragma endregion
 
@@ -67,29 +71,40 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Obstacle::SetDevice(dxCommon_->GetDevice());
 	Obstacle::SetCamera(camera_.get());
 
+	//障害物
+	TextObject::SetDevice(dxCommon_->GetDevice());
+	TextObject::SetCamera(camera_.get());
+
 #pragma endregion
 
 #pragma region キューブモデルの設定
 
 	//モデルの設定
+	//床のモデル
 	CubeModel* newCubeModel = new CubeModel();
 	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
 	cubeModel.reset(newCubeModel);
-	hitBoxModel.reset(newCubeModel);
-	//床のモデル
 	cubeModel->SetImageData({ 1.0f, 0.0f, 0.0f,1.0f });
 	//hitboxのモデル
+	CubeModel* newCubeModel1 = new CubeModel();
+	newCubeModel1->CreateBuffers(dxCommon_->GetDevice());
+	hitBoxModel.reset(newCubeModel1);
 	hitBoxModel->SetImageData({ 1.0f,0.5f,0.5f,1.0f });
 
 #pragma endregion
 
-	//キューブオブジェクトの設定
-	CubeObject3D* newCubeObject = new CubeObject3D();
-	newCubeObject->Initialize();
-	cubeObject.reset(newCubeObject);
-	cubeObject->SetModel(cubeModel.get());
-	cubeObject->SetScale({ 120.0f,0.5f,120.0f });
-	cubeObject->SetPosition({ 0.0f,0.0f,0.0f });
+#pragma region 床の設定
+
+	//デバイスとカメラセット
+	Floor::SetDevice(dxCommon_->GetDevice());
+	Floor::SetCamera(camera_.get());
+	//床初期化
+	Floor* newFloor = new Floor();
+	newFloor->SetCubeModel(cubeModel.get());
+	newFloor->Initialize();
+	floor.reset(newFloor);
+
+#pragma endregion
 
 #pragma region プレイヤー初期化
 
@@ -144,49 +159,110 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		newObstacle->SetModel(stoneModel);
 		newObstacle->SetCubeModel(hitBoxModel.get());
 		//ファイル読み込みで得た座標を代入
-		newObstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z});
+		newObstacle->SetPosition({0,0,-10000});
 		newObstacle->Initialize();
 		obstacles.push_back(std::move(newObstacle));
 	}
 
 #pragma endregion
 
-
-	//プレイヤーに当たり判定をセット
-	player->SetCollisionFloor(cubeObject->GetPosition(), cubeObject->GetScale());	//床
-	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+#pragma region テキストのオブジェクト
+	for (int i = 0; i < textObjectVol; i++)
 	{
-		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
+		std::unique_ptr<TextObject>newTextObject = std::make_unique<TextObject>();
+		if (i == 0)	//タイトル
+		{
+			newTextObject->SetModel(titleModel);
+			newTextObject->SetPosition({ 0,30,0 });
+		}
+		if (i == 1)	//ステージ1
+		{
+			newTextObject->SetModel(stage1Model);
+			newTextObject->SetPosition({ 200,30,0 });
+		}
+		newTextObject->Initialize();
+		textObjects.push_back(std::move(newTextObject));
 	}
 
+#pragma endregion
 
+#pragma region ゴール初期化
+
+	//デバイスとカメラセット
+	Goal::SetDevice(dxCommon_->GetDevice());
+	Goal::SetCamera(camera_.get());
+	//ゴール初期化
+	Goal* newGoal = new Goal();
+	newGoal->SetModel(goalModel);
+	newGoal->SetCubeModel(hitBoxModel.get());
+	newGoal->Initialize();
+	goal.reset(newGoal);
+
+#pragma endregion 
+
+#pragma region 鍵初期化
+
+	//デバイスとカメラセット
+	Key::SetDevice(dxCommon_->GetDevice());
+	Key::SetCamera(camera_.get());
+	//ゴール初期化
+	Key* newKey = new Key();
+	newKey->SetModel(keyModel);
+	newKey->SetCubeModel(hitBoxModel.get());
+	newKey->Initialize();
+	key.reset(newKey);
+
+#pragma endregion
+
+#pragma region スプライト
 	//スプライト初期化処理
 	spriteCommon = sprite->SpriteCommonCreate(dxCommon_->GetDevice(), 1280, 720);
 	sprite->SpriteCommonLoadTexture(spriteCommon, 0, L"Resources/title.png", dxCommon_->GetDevice());
+	sprite->SpriteCommonLoadTexture(spriteCommon, 1, L"Resources/key.png", dxCommon_->GetDevice());
 	titleSprite.SpriteCreate(dxCommon_->GetDevice(), 1280, 720);
 	titleSprite.SetTexNumber(0);
 	titleSprite.SetPosition(XMFLOAT3(200, 100, 0));
 	titleSprite.SetScale(XMFLOAT2(414 * 2.2, 54 * 2.2));
+	keySprite.SpriteCreate(dxCommon_->GetDevice(), 1280, 720);
+	keySprite.SetTexNumber(1);
+	keySprite.SetPosition(XMFLOAT3(1200, 650, 0));
+	keySprite.SetScale(XMFLOAT2(64, 64));
+#pragma endregion
+
+	SetTitle();
+
 }
 
 void GameScene::Update()
 {
 	//コントローラー更新
 	dxInput->InputProcess();
+
+
 	//シーンごとの処理
 	(this->*Scene_[scene_])();
+
+	//デバッグ用 キー入力でステージ変更
+	if (input_->TriggerKey(DIK_0))stage = Stage::Tutorial;
+	if (input_->TriggerKey(DIK_1))stage = Stage::Stage1;
+
+	//前のシーンと今のシーンが違かったらリセット処理
+	if (scene_ != preScene_)
+	{
+		//タイトルをセット
+		if(scene_ == static_cast<size_t>(Scene::Title))SetTitle();
+	}
 
 	//前のステージと現在のステージが違かったらリセット処理
 	if (stage != preStage)
 	{
-		if (stage == Stage::Tutorial)
-		{
-			player->SetTutorial();
-			LoadCsv(L"Resources/obstacleTutorial.csv");
-		}
+		//チュートリアルに移動した場合
+		if (stage == Stage::Tutorial)	SetTutorial();
+		if (stage == Stage::Stage1)		SetStage1();
 	}
 
 	//前のフレームのシーン取得
+	preScene_ = scene_;
 	preStage = stage;
 }
 
@@ -204,17 +280,34 @@ void GameScene::TitleUpdate()
 		stage = Stage::Tutorial;
 	}
 
-	//タイトルのスプライト更新
-	titleSprite.SpriteTransferVertexBuffer(titleSprite);
-	titleSprite.SpriteUpdate(titleSprite, spriteCommon);
+
+	//プレイヤー更新
+	player->Update();
+	//床更新
+	floor->Update();
+
+	//テキストのオブジェクト更新
+	for (std::unique_ptr<TextObject>& textObject : textObjects)
+	{
+		textObject->Update();
+	}
+
+	camera_->StageSelect(player->GetPosition0());
+	//カメラ更新
+	camera_->Update();
 }
 
 void GameScene::TitleDraw()
 {
-	//スプライト共通コマンド
-	sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
-
-	titleSprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), titleSprite.vbView);
+	//プレイヤー描画
+	player->Draw(dxCommon_->GetCommandList());
+	//床描画
+	floor->Draw(dxCommon_->GetCommandList());
+	//テキストのオブジェクト描画
+	for (std::unique_ptr<TextObject>& textObject : textObjects)
+	{
+		textObject->Draw(dxCommon_->GetCommandList());
+	}
 }
 
 void GameScene::GameUpdate()
@@ -223,10 +316,17 @@ void GameScene::GameUpdate()
 	//カメラ更新
 	camera_->Update();
 
-	//キューブオブジェクト更新
-	cubeObject->Update();
+	//スペースを押したら指定してるマップに更新
+	DebugLoadCsv(L"Resources/obstacleTutorial.csv", tutorialObstacleVal);
+
 	//プレイヤー更新
 	player->Update();
+	//ゴール更新
+	goal->Update();
+	//鍵更新
+	key->Update();
+	//床更新
+	floor->Update();
 	//障害物更新
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
@@ -236,18 +336,94 @@ void GameScene::GameUpdate()
 
 void GameScene::GameDraw()
 {
-	//キューブ描画
-	cubeObject->Draw(dxCommon_->GetCommandList());
 	//プレイヤー描画
 	player->Draw(dxCommon_->GetCommandList());
+	//ゴール描画
+	if (player->GetKeyFlag())
+	{
+		goal->Draw(dxCommon_->GetCommandList());
+	}
+	//鍵描画
+	key->Draw(dxCommon_->GetCommandList());
+	//床描画
+	floor->Draw(dxCommon_->GetCommandList());
 	//障害物描画
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
 		obstacle->Draw(dxCommon_->GetCommandList());
 	}
+
+	//鍵を取得したら描画
+	if (player->GetKeyFlag())
+	{
+		keySprite.SpriteTransferVertexBuffer(keySprite);
+		keySprite.SpriteUpdate(keySprite, spriteCommon);
+		sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
+		keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
+	}
 }
 
-void GameScene::LoadCsv(const wchar_t* fileName)
+void GameScene::SetTitle()
+{
+	//プレイヤーセット
+	player->SetTitle();
+	//床セット
+	floor->SetTitle();
+
+	//プレイヤーに当たり判定をセット
+	player->ClearCollision();
+	player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+}
+
+void GameScene::SetTutorial()
+{
+	//プレイヤーセット
+	player->SetTutorial();
+	//障害物読み込み
+	LoadCsv(L"Resources/obstacleTutorial.csv", tutorialObstacleVal);
+	//ゴールセット
+	goal->SetTutorial();
+	//鍵セット
+	key->SetTutorial();
+	//床セット
+	floor->SetTutorial();
+
+	//プレイヤーに当たり判定をセット
+	player->ClearCollision();
+	player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
+	player->SetCollisionGoal(key->GetPosition(), key->GetScale());	//ゴール
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
+	}
+}
+
+void GameScene::SetStage1()
+{
+	//プレイヤーセット
+	player->SetTutorial();
+	//障害物読み込み
+	LoadCsv(L"Resources/obstacleStage1.csv", stage1ObstacleVal);
+	//ゴールセット
+	goal->SetTutorial();
+	//鍵セット
+	key->SetTutorial();
+	//床セット
+	floor->SetTutorial();
+
+	//プレイヤーに当たり判定をセット
+	player->ClearCollision();
+	player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
+	player->SetCollisionGoal(key->GetPosition(), key->GetScale());	//ゴール
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
+	}
+}
+
+void GameScene::LoadCsv(const wchar_t* fileName, int obstacleVal)
 {
 	//ファイル読み込み
 		std::stringstream obstaclePosList;	//文字列
@@ -281,9 +457,66 @@ void GameScene::LoadCsv(const wchar_t* fileName)
 		int i = 1;
 		for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 		{
-			obstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z });
+			if (i <= obstacleVal)
+			{
+				obstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z });
+				obstacle->SetHitbox();
+			}
+			else
+			{
+				obstacle->SetPosition({ 0,0,-10000});
+			}
 			i++;
 		}
+}
+
+void GameScene::DebugLoadCsv(const wchar_t* fileName, int obstacleVal)
+{
+	if (input_->TriggerKey(DIK_SPACE))
+	{
+		//ファイル読み込み
+		std::stringstream obstaclePosList;	//文字列
+		std::vector<DirectX::XMFLOAT3>obstaclePos;
+		//ファイルを開く
+		std::ifstream file;
+		file.open(fileName);
+		//ファイルの内容をコピー
+		obstaclePosList << file.rdbuf();
+		//ファイルを閉じる
+		file.close();
+
+		std::string line;
+
+		//ファイルから障害物の場所を読み込み
+		while (getline(obstaclePosList, line, '{'))
+		{
+			//1行分の文字列をストリームに変換して解析しやすくする
+			std::istringstream line_stream(line);
+			std::string word1;
+			std::string word2;
+			std::string word3;
+			//カンマ区切りで先頭文字列を取得
+			getline(line_stream, word1, ',');
+			getline(line_stream, word2, ',');
+			getline(line_stream, word3, ',');
+			DirectX::XMFLOAT3 pos(atoi(word1.c_str()), atoi(word2.c_str()), atoi(word3.c_str()));
+			obstaclePos.push_back(pos);
+		}
+
+		int i = 1;
+		for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+		{
+			if (i <= obstacleVal)
+			{
+				obstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z });
+			}
+			else
+			{
+				obstacle->SetPosition({ 0,0,-10000 });
+			}
+			i++;
+		}
+	}
 }
 
 void (GameScene::* GameScene::Scene_[])() =

@@ -161,7 +161,10 @@
     <ClCompile Include="fbx\FbxLoader.cpp" />
     <ClCompile Include="fbx\FbxModel.cpp" />
     <ClCompile Include="fbx\FbxObject3D.cpp" />
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Math2.cpp" />
     <ClCompile Include="math\Matrix4.cpp" />
@@ -170,6 +173,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="TextObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3D\Collision.h" />
@@ -186,7 +190,10 @@
     <ClInclude Include="fbx\FbxLoader.h" />
     <ClInclude Include="fbx\FbxModel.h" />
     <ClInclude Include="fbx\FbxObject3D.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Goal.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="math\Math2.h" />
     <ClInclude Include="math\Matrix4.h" />
     <ClInclude Include="math\Quaternion.h" />
@@ -194,6 +201,7 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="TextObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

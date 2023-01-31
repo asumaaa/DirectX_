@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Math2.h"
+#include "math.h"
 
 #define PI 3.14159265359
 #define G 6.674	//万有引力定数
@@ -96,8 +98,20 @@ void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 	cubeObject1->Draw(cmdList);
 }
 
+void Player::SetTitle()
+{
+	groundFlag0 = false;
+	groundFlag1 = false;
+
+	SetPosition0({ 0,10,0 });
+	SetPosition1({ 0,-10,0 });
+}
+
 void Player::SetTutorial()
 {
+	groundFlag0 = false;
+	groundFlag1 = false;
+
 	SetPosition0({ -50,10,-50 });
 	SetPosition1({-50,-10,-50});
 }
@@ -168,6 +182,19 @@ void Player::UpdateCollision()
 			}
 		}
 	}
+
+	//-----------鍵との当たり判定---------
+	for (std::unique_ptr<Collision>& collision : collisionsKey)
+	{
+		if (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+		{
+			keyFlag = true;
+		}
+		if (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+		{
+			keyFlag = true;
+		}
+	}
 }
 
 void Player::UpdateMove()
@@ -234,6 +261,23 @@ void Player::UpdateMove()
 	position1.x += velocity1.x;
 	position1.y += velocity1.y;
 	position1.z += velocity1.z;
+
+
+	//プレイヤーの向き
+	float c = atan(velocity0.x / velocity0.z);
+	if (velocity0.z > 0)
+	{
+		playerDirection0 = { 0.0f				,atan(c)				,0.0f };
+		playerDirection1 = { 0.0f + (float)PI	,atan(c) + (float)PI	,0.0f };
+	}
+	else if (velocity0.z < 0)
+	{
+		playerDirection0 = { 0.0f				,atan(c) + (float)PI	,0.0f };
+		playerDirection1 = { 0.0f + (float)PI	,atan(c)				,0.0f };
+	}
+
+	rotation0 = playerDirection0;
+	rotation1 = playerDirection1;
 }
 
 void Player::SetCollisionObstacle(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)
@@ -241,6 +285,28 @@ void Player::SetCollisionObstacle(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 
 	std::unique_ptr<Collision>newCollision = std::make_unique<Collision>();
 	newCollision->SetObject(position, scale);
 	collisionsObstacle.push_back(std::move(newCollision));
+}
+
+void Player::SetCollisionKey(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)
+{
+	std::unique_ptr<Collision>newCollision = std::make_unique<Collision>();
+	newCollision->SetObject(position, scale);
+	collisionsKey.push_back(std::move(newCollision));
+}
+
+void Player::SetCollisionGoal(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)
+{
+	std::unique_ptr<Collision>newCollision = std::make_unique<Collision>();
+	newCollision->SetObject(position, scale);
+	collisionsGoal.push_back(std::move(newCollision));
+}
+
+void Player::ClearCollision()
+{
+	collisionsObstacle.clear();
+	collisionsFloor.clear();
+	collisionsKey.clear();
+	collisionsGoal.clear();
 }
 
 void Player::SetCollisionFloor(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)

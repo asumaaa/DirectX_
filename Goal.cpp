@@ -1,9 +1,9 @@
-#include "Obstacle.h"
+#include "Goal.h"
 
-ID3D12Device* Obstacle::device = nullptr;
-Camera* Obstacle::camera = nullptr;
+ID3D12Device* Goal::device = nullptr;
+Camera* Goal::camera = nullptr;
 
-void Obstacle::Initialize()
+void Goal::Initialize()
 {
 	//オブジェクト初期化
 	object = new FbxObject3D;
@@ -15,28 +15,23 @@ void Obstacle::Initialize()
 	newCubeObject->Initialize();
 	cubeObject.reset(newCubeObject);
 	cubeObject->SetModel(cubeModel);
+	//ヒットボックスのスケール設定
+	hitboxScale.x = 6.0f;
+	hitboxScale.y = 6.0f;
+	hitboxScale.z = 6.0f;
 
-	hitboxPosition.x = position.x;
-	hitboxPosition.y = position.y;
-	hitboxPosition.z = position.z;
-	hitboxRotation = { 0.0f,0.0f,0.0f };
-	hitboxScale = { 6.0f,6.0f,6.0f };
 }
 
-void Obstacle::Update()
+void Goal::Update()
 {
-	//hitbox調整
 	/*hitboxPosition.x = position.x;
 	hitboxPosition.y = position.y;
-	hitboxPosition.z = position.z;
-	hitboxRotation = { 0.0f,0.0f,0.0f };
-	hitboxScale = { 6.0f,6.0f,6.0f };*/
+	hitboxPosition.z = position.z;*/
 
-	//変形行列セット
-	object->SetPosition(position);
-	object->SetRotation(rotation);
-	object->SetScale(scale);
 	//オブジェクト更新
+	object->SetPosition(position);
+	object->SetScale(scale);
+	object->SetRotation(rotation);
 	object->Update();
 
 	cubeObject->SetPosition(hitboxPosition);
@@ -45,14 +40,16 @@ void Obstacle::Update()
 	cubeObject->Update();
 }
 
-void Obstacle::Draw(ID3D12GraphicsCommandList* cmdList)
+void Goal::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	object->Draw(cmdList);
 	cubeObject->Draw(cmdList);
 }
 
-void Obstacle::SetHitbox()
+void Goal::SetTutorial()
 {
+	SetPosition({ 50,10,50 });
+
 	hitboxPosition.x = position.x;
 	hitboxPosition.y = position.y + 3;
 	hitboxPosition.z = position.z;

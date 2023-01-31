@@ -35,6 +35,9 @@ public:
 	void SetRotation(DirectX::XMFLOAT3 rot) { rotation = rot; }
 	void SetScale(DirectX::XMFLOAT3 sca) { scale = sca; }
 
+	//ヒットボックスセット(ファイルを読み込んだ後にする)
+	void SetHitbox();
+
 private:
 	//デバイス
 	static ID3D12Device* device;
@@ -51,7 +54,7 @@ private:
 	//変形行列
 	DirectX::XMFLOAT3 position = { 10.0f,5.0f,0.0f };
 	DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f };
-	DirectX::XMFLOAT3 scale = { 3.0f,3.0f,3.0f };
+	DirectX::XMFLOAT3 scale = { 0.06f,0.06f,0.06f };
 
 	//hitboxの変形行列
 	DirectX::XMFLOAT3 hitboxPosition = { 0.0f,0.0f,0.0f };
