@@ -88,7 +88,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	newCubeObject->Initialize();
 	cubeObject.reset(newCubeObject);
 	cubeObject->SetModel(cubeModel.get());
-	cubeObject->SetScale({ 60.0f,0.5f,60.0f });
+	cubeObject->SetScale({ 120.0f,0.5f,120.0f });
 	cubeObject->SetPosition({ 0.0f,0.0f,0.0f });
 
 #pragma region プレイヤー初期化
@@ -151,6 +151,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 #pragma endregion
 
+
 	//プレイヤーに当たり判定をセット
 	player->SetCollisionFloor(cubeObject->GetPosition(), cubeObject->GetScale());	//床
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
@@ -174,6 +175,19 @@ void GameScene::Update()
 	dxInput->InputProcess();
 	//シーンごとの処理
 	(this->*Scene_[scene_])();
+
+	//前のステージと現在のステージが違かったらリセット処理
+	if (stage != preStage)
+	{
+		if (stage == Stage::Tutorial)
+		{
+			player->SetTutorial();
+			LoadCsv(L"Resources/obstacleTutorial.csv");
+		}
+	}
+
+	//前のフレームのシーン取得
+	preStage = stage;
 }
 
 void GameScene::Draw()
@@ -187,6 +201,7 @@ void GameScene::TitleUpdate()
 	{
 		scene_ = static_cast<size_t>(Scene::Game);
 		sceneDraw_ = static_cast<size_t>(SceneDraw::GameDraw);
+		stage = Stage::Tutorial;
 	}
 
 	//タイトルのスプライト更新
@@ -207,9 +222,6 @@ void GameScene::GameUpdate()
 	camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());
 	//カメラ更新
 	camera_->Update();
-
-	//スペースキーでファイル読み込み
-	LoadCsv();
 
 	//キューブオブジェクト更新
 	cubeObject->Update();
@@ -235,16 +247,14 @@ void GameScene::GameDraw()
 	}
 }
 
-void GameScene::LoadCsv()
+void GameScene::LoadCsv(const wchar_t* fileName)
 {
-	if (input_->TriggerKey(DIK_SPACE))
-	{
-		//ファイル読み込み
+	//ファイル読み込み
 		std::stringstream obstaclePosList;	//文字列
 		std::vector<DirectX::XMFLOAT3>obstaclePos;
 		//ファイルを開く
 		std::ifstream file;
-		file.open("Resources/obstacleTutorial.csv");
+		file.open(fileName);
 		//ファイルの内容をコピー
 		obstaclePosList << file.rdbuf();
 		//ファイルを閉じる
@@ -274,7 +284,6 @@ void GameScene::LoadCsv()
 			obstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z });
 			i++;
 		}
-	}
 }
 
 void (GameScene::* GameScene::Scene_[])() =

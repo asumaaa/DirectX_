@@ -96,6 +96,12 @@ void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 	cubeObject1->Draw(cmdList);
 }
 
+void Player::SetTutorial()
+{
+	SetPosition0({ -50,10,-50 });
+	SetPosition1({-50,-10,-50});
+}
+
 void Player::UpdateCollision()
 {
 

@@ -34,6 +34,9 @@ public:
 	//hitbox用のモデル
 	void SetCubeModel(CubeModel* model) { this->cubeModel = model; }
 
+	//シーンごとのセット
+	void SetTutorial();
+
 	//当たり判定更新
 	void UpdateCollision();
 	//動き更新

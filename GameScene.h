@@ -34,7 +34,7 @@ public:
 	void GameDraw();
 
 	//スペースキーでファイル読み込みを実行する関数
-	void LoadCsv();
+	void LoadCsv(const wchar_t* fileName);
 
 	//メンバ変数
 private:
@@ -80,7 +80,7 @@ private:
 		Game,	//ゲーム
 	};
 	//シーン	最初がタイトル
-	size_t scene_ = static_cast<size_t>(Scene::Game);
+	size_t scene_ = static_cast<size_t>(Scene::Title);
 	//メンバ関数のポインタテーブル
 	static void (GameScene::* Scene_[])();
 
@@ -91,8 +91,23 @@ private:
 		GameDraw,	//ゲーム
 	};
 	//シーン	最初がタイトル
-	size_t sceneDraw_ = static_cast<size_t>(SceneDraw::GameDraw);
+	size_t sceneDraw_ = static_cast<size_t>(SceneDraw::TitleDraw);
 	//メンバ関数のポインタテーブル
 	static void (GameScene::* SceneDraw_[])();
+
+	//ステージを分ける列挙型
+	enum Stage
+	{
+		Title,
+		Tutorial,
+		Stage1,
+		Stage2,
+		Stage3,
+		Stage4,
+	};
+	//ステージ
+	Stage stage = Stage::Title;
+	//前のフレームのステージ
+	Stage preStage = Stage::Title;
 };
 
