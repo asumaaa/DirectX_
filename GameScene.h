@@ -95,7 +95,9 @@ private:
 	//鍵
 	std::unique_ptr<Key>key;
 	//床
-	std::unique_ptr<Floor>floor;
+	//std::unique_ptr<Floor>floor;
+	std::list<std::unique_ptr<Floor>>floors;
+	size_t floorVol = 6;
 
 	//テキストのオブジェクト
 	std::list<std::unique_ptr<TextObject>>textObjects;

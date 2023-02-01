@@ -71,7 +71,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Obstacle::SetDevice(dxCommon_->GetDevice());
 	Obstacle::SetCamera(camera_.get());
 
-	//障害物
+	//床
+	Floor::SetDevice(dxCommon_->GetDevice());
+	Floor::SetCamera(camera_.get());
+
+	//テキストのオブジェクト
 	TextObject::SetDevice(dxCommon_->GetDevice());
 	TextObject::SetCamera(camera_.get());
 
@@ -95,14 +99,16 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 #pragma region 床の設定
 
-	//デバイスとカメラセット
-	Floor::SetDevice(dxCommon_->GetDevice());
-	Floor::SetCamera(camera_.get());
 	//床初期化
-	Floor* newFloor = new Floor();
-	newFloor->SetCubeModel(cubeModel.get());
-	newFloor->Initialize();
-	floor.reset(newFloor);
+	for (int i = 0; i < floorVol; i++)
+	{
+		std::unique_ptr<Floor>newFloor = std::make_unique<Floor>();
+		newFloor->SetCubeModel(cubeModel.get());
+		newFloor->Initialize();
+		newFloor->SetScale({ 120,0.5,120 });
+		newFloor->SetPosition({ 0,0,0 });
+		floors.push_back(std::move(newFloor));
+	}
 
 #pragma endregion
 
@@ -284,7 +290,10 @@ void GameScene::TitleUpdate()
 	//プレイヤー更新
 	player->Update();
 	//床更新
-	floor->Update();
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		floor->Update();
+	}
 
 	//テキストのオブジェクト更新
 	for (std::unique_ptr<TextObject>& textObject : textObjects)
@@ -302,7 +311,10 @@ void GameScene::TitleDraw()
 	//プレイヤー描画
 	player->Draw(dxCommon_->GetCommandList());
 	//床描画
-	floor->Draw(dxCommon_->GetCommandList());
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		floor->Draw(dxCommon_->GetCommandList());
+	}
 	//テキストのオブジェクト描画
 	for (std::unique_ptr<TextObject>& textObject : textObjects)
 	{
@@ -326,7 +338,10 @@ void GameScene::GameUpdate()
 	//鍵更新
 	key->Update();
 	//床更新
-	floor->Update();
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		floor->Update();
+	}
 	//障害物更新
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
@@ -346,7 +361,10 @@ void GameScene::GameDraw()
 	//鍵描画
 	key->Draw(dxCommon_->GetCommandList());
 	//床描画
-	floor->Draw(dxCommon_->GetCommandList());
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		floor->Draw(dxCommon_->GetCommandList());
+	}
 	//障害物描画
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
@@ -367,12 +385,17 @@ void GameScene::SetTitle()
 {
 	//プレイヤーセット
 	player->SetTitle();
-	//床セット
-	floor->SetTitle();
-
-	//プレイヤーに当たり判定をセット
+	//プレイヤーの当たり判定をリセット
 	player->ClearCollision();
-	player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+
+	//床セット
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		floor->SetScale({ 360,0.5,30 });
+		floor->SetPosition({ 180,0,0 });
+		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+	}
+
 }
 
 void GameScene::SetTutorial()
@@ -385,12 +408,54 @@ void GameScene::SetTutorial()
 	goal->SetTutorial();
 	//鍵セット
 	key->SetTutorial();
-	//床セット
-	floor->SetTutorial();
 
-	//プレイヤーに当たり判定をセット
+	//プレイヤーの当たり判定をリセット
 	player->ClearCollision();
-	player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+	//床セット
+	int i = 0;
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		if (i == 0)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}
+		if (i == 1)
+		{
+			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetPosition({ -60,0,0 });
+		}
+		if (i == 2)
+		{
+			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetPosition({ 60,0,0 });
+		}
+		if (i == 3)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,40,0 });
+		}
+		if (i == 4)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,-40,0 });
+		}
+		if (i == 5)
+		{
+			floor->SetScale({ 120,80.0f,0.5 });
+			floor->SetPosition({ 0,0,60 });
+		}
+		/*else
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}*/
+
+		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+
+		i++;
+	}
+
 	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
 	player->SetCollisionGoal(key->GetPosition(), key->GetScale());	//ゴール
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
@@ -409,12 +474,16 @@ void GameScene::SetStage1()
 	goal->SetTutorial();
 	//鍵セット
 	key->SetTutorial();
-	//床セット
-	floor->SetTutorial();
 
-	//プレイヤーに当たり判定をセット
+	//プレイヤーの当たり判定をリセット
 	player->ClearCollision();
-	player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+	//床セット
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		floor->SetScale({ 120,0.5,120 });
+		floor->SetPosition({ 0,0,0 });
+		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+	}
 	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
 	player->SetCollisionGoal(key->GetPosition(), key->GetScale());	//ゴール
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)

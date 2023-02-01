@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "Math2.h"
 #include "math.h"
 
 #define PI 3.14159265359
@@ -126,12 +125,45 @@ void Player::UpdateCollision()
 		//めり込まなくなりまで加算
 		while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 		{
-			//めり込んだらプレイヤーの状態を変更
-			position0.x -= 0.0002f;
-			hitboxPosition0.x -= 0.0002f;
-			if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+			if (hitboxPosition0.x < collision->GetPosition().x)
 			{
-				break;
+				//めり込んだらプレイヤーの状態を変更
+				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+				{
+					break;
+				}
+				position0.x -= 0.0002f;
+				hitboxPosition0.x -= 0.0002f;
+			}
+			if (hitboxPosition0.x > collision->GetPosition().x)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+				{
+					break;
+				}
+				position0.x += 0.0002f;
+				hitboxPosition0.x += 0.0002f;
+			}
+			if (hitboxPosition0.z < collision->GetPosition().z)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+				{
+					break;
+				}
+				position0.z -= 0.0002f;
+				hitboxPosition0.z -= 0.0002f;
+			}
+			if (hitboxPosition0.z > collision->GetPosition().z)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+				{
+					break;
+				}
+				position0.z += 0.0002f;
+				hitboxPosition0.z += 0.0002f;
 			}
 		}
 	}

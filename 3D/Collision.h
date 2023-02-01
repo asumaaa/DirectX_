@@ -25,6 +25,9 @@ public:
 	void SetObject(DirectX::XMFLOAT3 cubePos, DirectX::XMFLOAT3 cubeScale);
 	//更新
 	bool Update(DirectX::XMFLOAT3 spherePos, DirectX::XMFLOAT3 sphereScale);
+
+	//ゲッター
+	DirectX::XMFLOAT3 GetPosition() { return cubeVertex1.c; }
 private:
 	//当たり判定に必要な変数
 	CubeVertex cubeVertex1;
