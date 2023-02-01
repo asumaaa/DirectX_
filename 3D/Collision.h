@@ -28,6 +28,8 @@ public:
 
 	//ゲッター
 	DirectX::XMFLOAT3 GetPosition() { return cubeVertex1.c; }
+	DirectX::XMFLOAT3 GetMin() { return cubeVertex1.min; }
+	DirectX::XMFLOAT3 GetMax() { return cubeVertex1.max; }
 private:
 	//当たり判定に必要な変数
 	CubeVertex cubeVertex1;

@@ -183,8 +183,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		}
 		if (i == 1)	//ステージ1
 		{
-			newTextObject->SetModel(stage1Model);
-			newTextObject->SetPosition({ 200,30,0 });
+			newTextObject->SetModel(titleModel);
+			newTextObject->SetPosition({ 0,-30,0 });
+			newTextObject->SetRotation({ PI,0,0 });
 		}
 		newTextObject->Initialize();
 		textObjects.push_back(std::move(newTextObject));
@@ -301,7 +302,7 @@ void GameScene::TitleUpdate()
 		textObject->Update();
 	}
 
-	camera_->StageSelect(player->GetPosition0());
+	camera_->StageSelect(player->GetPosition0(), player->GetPlayerState());
 	//カメラ更新
 	camera_->Update();
 }

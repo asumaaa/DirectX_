@@ -24,7 +24,7 @@ public:
 	
 
 	//タイトル、ステージセレクトの挙動
-	void StageSelect(DirectX::XMFLOAT3 pos);
+	void StageSelect(DirectX::XMFLOAT3 pos, int playerState);
 	//プレイヤーを追尾する処理(プレイヤーの座標,プレイヤーの状態)
 	void PlayerAim(DirectX::XMFLOAT3 pos, int playerState);
 
@@ -62,4 +62,8 @@ private:
 	float changeModeTime = 60.0f;
 	//プレイヤー追尾状態の際のY座標
 	float changePosY = 10.0f;
+
+	//プレイヤー追尾状態の際のY座標
+	float eyeTitleY = 30.0f;
+	float targetTitlePosY = 20.0f;
 };

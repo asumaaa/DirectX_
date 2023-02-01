@@ -117,55 +117,95 @@ void Player::SetTutorial()
 
 void Player::UpdateCollision()
 {
+	DirectX::XMFLOAT3 Min = { hitboxPosition0.x - hitboxScale0.x, 
+		hitboxPosition0.y - hitboxScale0.y, hitboxPosition0.z - hitboxScale0.z };
+	DirectX::XMFLOAT3 Max = { hitboxPosition0.x + hitboxScale0.x,
+		hitboxPosition0.y + hitboxScale0.y, hitboxPosition0.z + hitboxScale0.z };
 
 	//-----------オブジェクトとの当たり判定---------
 	for (std::unique_ptr<Collision>& collision : collisionsObstacle)
 	{
-
-		//めり込まなくなりまで加算
-		while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+		//左からぶつかる場合
+		if ( -2 + velocity0.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity0.x)
 		{
-			if (hitboxPosition0.x < collision->GetPosition().x)
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
-				//めり込んだらプレイヤーの状態を変更
-				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-				{
-					break;
-				}
 				position0.x -= 0.0002f;
 				hitboxPosition0.x -= 0.0002f;
 			}
-			if (hitboxPosition0.x > collision->GetPosition().x)
+		}
+		//右からぶつかる場合
+		if (-2 + velocity0.x <= Min.x - collision->GetMax().x &&  Min.x - collision->GetMax().x <= 2 + velocity0.x)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
-				//めり込んだらプレイヤーの状態を変更
-				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-				{
-					break;
-				}
 				position0.x += 0.0002f;
 				hitboxPosition0.x += 0.0002f;
 			}
-			if (hitboxPosition0.z < collision->GetPosition().z)
+		}
+		//下からぶつかる場合
+		if (-2 + velocity0.z <= Max.z - collision->GetMin().z && Max.z - collision->GetMin().z <= 2 + velocity0.z)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
-				//めり込んだらプレイヤーの状態を変更
-				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-				{
-					break;
-				}
 				position0.z -= 0.0002f;
 				hitboxPosition0.z -= 0.0002f;
 			}
-			if (hitboxPosition0.z > collision->GetPosition().z)
+		}
+		//上からぶつかる場合
+		if (-2 + velocity0.z <= Min.z - collision->GetMax().z && Min.z - collision->GetMax().z <= 2 + velocity0.z)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
-				//めり込んだらプレイヤーの状態を変更
-				if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-				{
-					break;
-				}
 				position0.z += 0.0002f;
 				hitboxPosition0.z += 0.0002f;
 			}
 		}
+
+		//めり込まなくなりまで加算
+		//while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+		//{
+		//	if (hitboxPosition0.x < collision->GetPosition().x)
+		//	{
+		//		//めり込んだらプレイヤーの状態を変更
+		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+		//		{
+		//			break;
+		//		}
+		//		position0.x -= 0.0002f;
+		//		hitboxPosition0.x -= 0.0002f;
+		//	}
+		//	if (hitboxPosition0.x > collision->GetPosition().x)
+		//	{
+		//		//めり込んだらプレイヤーの状態を変更
+		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+		//		{
+		//			break;
+		//		}
+		//		position0.x += 0.0002f;
+		//		hitboxPosition0.x += 0.0002f;
+		//	}
+		//	if (hitboxPosition0.z < collision->GetPosition().z)
+		//	{
+		//		//めり込んだらプレイヤーの状態を変更
+		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+		//		{
+		//			break;
+		//		}
+		//		position0.z -= 0.0002f;
+		//		hitboxPosition0.z -= 0.0002f;
+		//	}
+		//	if (hitboxPosition0.z > collision->GetPosition().z)
+		//	{
+		//		//めり込んだらプレイヤーの状態を変更
+		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
+		//		{
+		//			break;
+		//		}
+		//		position0.z += 0.0002f;
+		//		hitboxPosition0.z += 0.0002f;
+		//	}
+		//}
 	}
 
 	//-----------床との当たり判定-----------------

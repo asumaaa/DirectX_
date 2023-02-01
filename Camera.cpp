@@ -65,10 +65,61 @@ void Camera::Update()
 
 	matView_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_));
 }
-void Camera::StageSelect(DirectX::XMFLOAT3 pos)
+void Camera::StageSelect(DirectX::XMFLOAT3 pos, int playerState)
 {
-	target_ = { pos.x,30,pos.z };
-	eye_ = { pos.x,20,-100 };
+	//前のフレームと現在のフレームで状態が違ったらフラグを立てる
+	if (playerState != prePlayerState)
+	{
+		changeMode = true;
+	}
+
+	//changeMode==trueのとき
+	if (changeMode == true)
+	{
+		//タイマー開始
+		changeModeTimer += 1.0f;
+
+		/*easeInOutQuart(changeModeTimer / 60.0f);*/
+		//表から裏の場合
+		if (playerState == 1)
+		{
+			eye_.y = eyeTitleY - ((eyeTitleY * easeOutQuint(changeModeTimer / 60.0f)) * 2);
+			target_.y = targetTitlePosY - ((targetTitlePosY * easeOutQuint(changeModeTimer / 60.0f)) * 2);
+			eye_.x = pos.x;
+			target_.x = pos.x;
+		}
+		//裏から表の場合
+		if (playerState == 0)
+		{
+			eye_.y = -eyeTitleY + ((eyeTitleY * easeOutQuint(changeModeTimer / 60.0f)) * 2);
+			target_.y = -targetTitlePosY + ((targetTitlePosY * easeOutQuint(changeModeTimer / 60.0f)) * 2);
+			eye_.x = pos.x;
+			target_.x = pos.x;
+		}
+
+		//設定していた時間まで到達したらchangeMode解除
+		if (changeModeTimer >= changeModeTime)
+		{
+			changeMode = false;
+			changeModeTimer = 0;
+		}
+
+	}
+
+	//プレイヤーの状態によって視点を変更
+	if (playerState == 0 && changeMode == false)
+	{
+		eye_ = { pos.x,eyeTitleY,pos.z - 100 };
+		target_ = { pos.x,targetTitlePosY,pos.z + 20 };
+	}
+	if (playerState == 1 && changeMode == false)
+	{
+		eye_ = { pos.x,-eyeTitleY,pos.z - 100 };
+		target_ = { pos.x,-targetTitlePosY,pos.z + 20 };
+	}
+
+	//前のフレームの状態を取得
+	prePlayerState = playerState;
 }
 void Camera::PlayerAim(DirectX::XMFLOAT3 pos, int playerState)
 {
