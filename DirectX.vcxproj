@@ -121,6 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)3D;$(ProjectDir)base;$(ProjectDir)DirectXTex;$(ProjectDir);$(ProjectDir)fbx;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaderes\FbxShader;$(ProjectDir)Resources\Shaderes\OBJShader;$(ProjectDir)Resources\Shaderes\ParticleShader;$(ProjectDir)Resources\Shaderes\SpriteShader;$(ProjectDir)Resources\Shaderes\Shader;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,7 +137,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\a\Desktop\DirectX\base;$(ProjectDir)fbx</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirextTex;$(ProjectDir)fbx;$(ProjectDir);$(ProjectDir)base;$(ProjectDir)math;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaders\FbxShader;$(ProjectDir)Resources\Shaders\OBJShader;$(ProjectDir)Resources\Shaders\ParticleShader;$(ProjectDir)Resources\Shaders\Shader;$(ProjectDir)Resources\Shaders\SpriteShader;$(ProjectDir)3D</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
