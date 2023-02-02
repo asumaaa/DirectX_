@@ -261,7 +261,6 @@ void Player::UpdateCollision()
 		//裏のオブジェクト
 		if (collision->Update(position1, scale1) == 1)
 		{
-			//followFlag = false;
 			//接地フラグを立てる
 			groundFlag1 = true;
 			//自由落下Tの値をリセット
@@ -314,16 +313,15 @@ void Player::UpdateMove()
 		velocity1.z = velocity0.z;
 		break;
 	}
-	if (followFlag == true)
-	{
-		XMVECTOR player0 = XMLoadFloat3(&position0);
-		XMVECTOR player1 = XMLoadFloat3(&position1);
-		XMVECTOR direction = XMVector3Normalize(player0 - player1);
-		player1 = player1 + direction;
-		XMStoreFloat3(&position1, player1);
+	
+	//player1がplayer0についていく処理
+	XMVECTOR player0 = XMLoadFloat3(&position0);
+	XMVECTOR player1 = XMLoadFloat3(&position1);
+	XMVECTOR direction = XMVector3Normalize(player0 - player1);
+	direction = XMVectorSetY(direction, fallVelocity1.y);
+	player1 = player1 + direction / 5;
+	XMStoreFloat3(&position1, player1);
 
-		//followFlag = false;
-	}
 	//--------------落下、ジャンプ----------------
 	//スペースキーでジャンプ
 	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A && groundFlag0 == true && playerState == front)
@@ -338,7 +336,6 @@ void Player::UpdateMove()
 	{
 		//接地フラグをfalseに
 		playerState = front;
-		//followFlag = false;
 	}
 
 
