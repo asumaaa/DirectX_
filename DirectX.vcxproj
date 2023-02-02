@@ -72,19 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\School\2NenKouki\TD\fbx_sdk\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>D:\School\2NenKouki\TD\fbx_sdk\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\School\2NenKouki\TD\fbx_sdk\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>D:\School\2NenKouki\TD\fbx_sdk\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\include;$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\School\2NenKouki\TD\fbx_sdk\include;D:\School\2NenKouki\TD\fbx_sdk\include;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\include;$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\School\2NenKouki\TD\fbx_sdk\lib;D:\School\2NenKouki\TD\fbx_sdk\lib;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\include;$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\School\2NenKouki\TD\fbx_sdk\include;D:\School\2NenKouki\TD\fbx_sdk\include;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\include;$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\School\2NenKouki\TD\fbx_sdk\lib;D:\School\2NenKouki\TD\fbx_sdk\lib;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

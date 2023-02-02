@@ -7,6 +7,7 @@
 #include "FbxObject3D.h"
 #include "CubeModel.h"
 #include "CubeObject3D.h"
+#include <cmath>
 
 class Player
 {
@@ -142,6 +143,7 @@ private:
 	//接地フラグ
 	bool groundFlag0 = false;
 	bool groundFlag1 = false;
+	bool followFlag = false;
 
 	//表裏の列挙型
 public:

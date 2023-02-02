@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "math.h"
+#include <cmath>
 
 #define PI 3.14159265359
 #define G 6.674	//万有引力定数
@@ -7,7 +8,7 @@
 
 ID3D12Device* Player::device = nullptr;
 Camera* Player::camera = nullptr;
-Input* Player::input = nullptr; 
+Input* Player::input = nullptr;
 DXInput* Player::dxInput = nullptr;
 
 void Player::Initialize()
@@ -25,7 +26,7 @@ void Player::Initialize()
 
 	//Y座標を逆にして座標設定
 	position1 = { position0.x,		-position0.y - 10,	position0.z };
-	rotation1 = { rotation0.x + (float)PI,	rotation0.y + (float)PI,		rotation0.y};
+	rotation1 = { rotation0.x + (float)PI,	rotation0.y + (float)PI,		rotation0.y };
 	scale1 = scale0;
 
 	//ヒットボックスの設定
@@ -112,35 +113,52 @@ void Player::SetTutorial()
 	groundFlag1 = false;
 
 	SetPosition0({ -50,10,-50 });
-	SetPosition1({-50,-10,-50});
+	SetPosition1({ -50,-10,-50 });
 }
 
 void Player::UpdateCollision()
 {
-	DirectX::XMFLOAT3 Min = { hitboxPosition0.x - hitboxScale0.x, 
+	/*XMVECTOR player0 = XMLoadFloat3(&position0);
+	XMVECTOR player1 = XMLoadFloat3(&position1);
+	XMVECTOR direction = XMVector3Normalize(player0 - player1);
+	player1 = player1 + direction;
+	XMStoreFloat3(&position1, player1);*/
+
+	DirectX::XMFLOAT3 Min = { hitboxPosition0.x - hitboxScale0.x,
 		hitboxPosition0.y - hitboxScale0.y, hitboxPosition0.z - hitboxScale0.z };
 	DirectX::XMFLOAT3 Max = { hitboxPosition0.x + hitboxScale0.x,
 		hitboxPosition0.y + hitboxScale0.y, hitboxPosition0.z + hitboxScale0.z };
+
+
+	DirectX::XMFLOAT3 Min1 = { hitboxPosition1.x - hitboxScale1.x,
+		hitboxPosition1.y - hitboxScale1.y, hitboxPosition1.z - hitboxScale1.z };
+	DirectX::XMFLOAT3 Max1 = { hitboxPosition1.x + hitboxScale1.x,
+		hitboxPosition1.y + hitboxScale1.y, hitboxPosition1.z + hitboxScale1.z };
 
 	//-----------オブジェクトとの当たり判定---------
 	for (std::unique_ptr<Collision>& collision : collisionsObstacle)
 	{
 		//左からぶつかる場合
-		if ( -2 + velocity0.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity0.x)
+		if (-2 + velocity0.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity0.x)
 		{
 			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
 				position0.x -= 0.0002f;
 				hitboxPosition0.x -= 0.0002f;
+				position1.x -= 0.0002f;
+				hitboxPosition1.x -= 0.0002f;
+
 			}
 		}
 		//右からぶつかる場合
-		if (-2 + velocity0.x <= Min.x - collision->GetMax().x &&  Min.x - collision->GetMax().x <= 2 + velocity0.x)
+		if (-2 + velocity0.x <= Min.x - collision->GetMax().x && Min.x - collision->GetMax().x <= 2 + velocity0.x)
 		{
 			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
 				position0.x += 0.0002f;
 				hitboxPosition0.x += 0.0002f;
+				position1.x += 0.0002f;
+				hitboxPosition1.x += 0.0002f;
 			}
 		}
 		//下からぶつかる場合
@@ -150,6 +168,8 @@ void Player::UpdateCollision()
 			{
 				position0.z -= 0.0002f;
 				hitboxPosition0.z -= 0.0002f;
+				position1.z -= 0.0002f;
+				hitboxPosition1.z -= 0.0002f;
 			}
 		}
 		//上からぶつかる場合
@@ -159,53 +179,53 @@ void Player::UpdateCollision()
 			{
 				position0.z += 0.0002f;
 				hitboxPosition0.z += 0.0002f;
+				position1.z += 0.0002f;
+				hitboxPosition1.z += 0.0002f;
 			}
 		}
 
-		//めり込まなくなりまで加算
-		//while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
-		//{
-		//	if (hitboxPosition0.x < collision->GetPosition().x)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.x -= 0.0002f;
-		//		hitboxPosition0.x -= 0.0002f;
-		//	}
-		//	if (hitboxPosition0.x > collision->GetPosition().x)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.x += 0.0002f;
-		//		hitboxPosition0.x += 0.0002f;
-		//	}
-		//	if (hitboxPosition0.z < collision->GetPosition().z)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.z -= 0.0002f;
-		//		hitboxPosition0.z -= 0.0002f;
-		//	}
-		//	if (hitboxPosition0.z > collision->GetPosition().z)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.z += 0.0002f;
-		//		hitboxPosition0.z += 0.0002f;
-		//	}
-		//}
+		//player2
+		//左からぶつかる場合
+		if (-2 + velocity1.x <= Max1.x - collision->GetMin().x && Max1.x - collision->GetMin().x <= 2 + velocity1.x)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.x -= 0.0002f;
+				hitboxPosition1.x -= 0.0002f;
+
+			}
+
+		}
+		//右からぶつかる場合
+		else if (-2 + velocity1.x <= Min1.x - collision->GetMax().x && Min1.x - collision->GetMax().x <= 2 + velocity1.x)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.x += 0.0002f;
+				hitboxPosition1.x += 0.0002f;
+
+			}
+		}
+		//下からぶつかる場合
+		else if (-2 + velocity1.z <= Max1.z - collision->GetMin().z && Max1.z - collision->GetMin().z <= 2 + velocity1.z)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.z -= 0.0002f;
+				hitboxPosition1.z -= 0.0002f;
+
+			}
+		}
+		//上からぶつかる場合
+		else if (-2 + velocity1.z <= Min1.z - collision->GetMax().z && Min1.z - collision->GetMax().z <= 2 + velocity1.z)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.z += 0.0002f;
+				hitboxPosition1.z += 0.0002f;
+
+			}
+		}
 	}
 
 	//-----------床との当たり判定-----------------
@@ -220,21 +240,26 @@ void Player::UpdateCollision()
 			fallTimer0 = 0;
 			//落下ベクトルをリセット
 			fallVelocity0.y = 0;
+
+			//接地フラグをfalseに
+			fallTimer1 = -1;
+			groundFlag1 = false;
 		}
 		//めり込まなくなりまで加算
 		while (collision->Update(position0, scale0) == 1)
 		{
 			//めり込んだらプレイヤーの状態を変更
-			playerState = back;
 			position0.y += 0.002f;
 			if (collision->Update(position0, scale0) == 0)
 			{
+				playerState = back;
 				break;
 			}
 		}
 		//裏のオブジェクト
 		if (collision->Update(position1, scale1) == 1)
 		{
+			//followFlag = false;
 			//接地フラグを立てる
 			groundFlag1 = true;
 			//自由落下Tの値をリセット
@@ -246,7 +271,6 @@ void Player::UpdateCollision()
 		while (collision->Update(position1, scale1) == 1)
 		{
 			//めり込んだらプレイヤーの状態を変更
-			playerState = front;
 			position1.y -= 0.002f;
 			if (collision->Update(position1, scale1) == 0)
 			{
@@ -278,13 +302,29 @@ void Player::UpdateMove()
 	//スティックで得た変数を代入
 	velocity0.z = x * 10;
 	velocity0.x = y * 10;
-	velocity1.z = x * 10;
-	velocity1.x = y * 10;
+	velocity1.x = velocity0.x;
+	velocity1.z = velocity0.z;
+	while(dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	{
+		velocity0.z = x * 20;
+		velocity0.x = y * 20;
+		velocity1.x = velocity0.x;
+		velocity1.z = velocity0.z;
+		break;
+	}
+	if (followFlag == true)
+	{
+		XMVECTOR player0 = XMLoadFloat3(&position0);
+		XMVECTOR player1 = XMLoadFloat3(&position1);
+		XMVECTOR direction = XMVector3Normalize(player0 - player1);
+		player1 = player1 + direction;
+		XMStoreFloat3(&position1, player1);
 
-
+		//followFlag = false;
+	}
 	//--------------落下、ジャンプ----------------
 	//スペースキーでジャンプ
-	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A  && groundFlag0 == true && playerState == front)
+	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A && groundFlag0 == true && playerState == front)
 	{
 		//接地フラグをfalseに
 		fallTimer0 = -1;
@@ -292,11 +332,11 @@ void Player::UpdateMove()
 	}
 
 	//スペースキーでジャンプ
-	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A && groundFlag1 == true && playerState == back)
+	else if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_B /*&& groundFlag1 == true*/ && playerState == back)
 	{
 		//接地フラグをfalseに
-		fallTimer1 = -1;
-		groundFlag1 = false;
+		playerState = front;
+		//followFlag = false;
 	}
 
 
@@ -317,7 +357,7 @@ void Player::UpdateMove()
 	if (groundFlag1 == false)
 	{
 		//60フレームでタイマーを1進める
-		fallTimer1 += 3.0f / 60.0f;
+		fallTimer1 += 2.0f / 60.0f;
 		//落下ベクトル計算
 		float v = GAcceleration * fallTimer1;
 		fallVelocity1.y = +(GAcceleration * fallTimer1);
