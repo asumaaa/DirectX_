@@ -97,7 +97,7 @@ private:
 	//床
 	//std::unique_ptr<Floor>floor;
 	std::list<std::unique_ptr<Floor>>floors;
-	size_t floorVol = 6;
+	size_t floorVol = 7;
 
 	//テキストのオブジェクト
 	std::list<std::unique_ptr<TextObject>>textObjects;

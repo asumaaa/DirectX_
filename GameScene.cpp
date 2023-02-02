@@ -353,6 +353,11 @@ void GameScene::GameUpdate()
 	{
 		obstacle->Update();
 	}
+
+	if (player->GetGoalFlag())
+	{
+		SetTutorial();
+	}
 }
 
 void GameScene::GameDraw()
@@ -393,6 +398,21 @@ void GameScene::SetTitle()
 	player->SetTitle();
 	//プレイヤーの当たり判定をリセット
 	player->ClearCollision();
+
+	int i = 0;
+	for (std::unique_ptr<TextObject>& textObj: textObjects)
+	{
+		if (i == 0)	//タイトル
+		{
+			textObj->SetPosition({ 0,30,0 });
+		}
+		if (i == 1)	//ステージ1
+		{
+			textObj->SetPosition({ 0,-30,0 });
+			textObj->SetRotation({ PI,0,0 });
+		}
+		i++;
+	}
 
 	//床セット
 	for (std::unique_ptr<Floor>& floor : floors)
@@ -451,6 +471,11 @@ void GameScene::SetTutorial()
 			floor->SetScale({ 120,80.0f,0.5 });
 			floor->SetPosition({ 0,0,60 });
 		}
+		if (i == 6)
+		{
+			floor->SetScale({ 120,80.0f,0.5 });
+			floor->SetPosition({ 0,0,-60 });
+		}
 		/*else
 		{
 			floor->SetScale({ 120,0.5,120 });
@@ -463,7 +488,7 @@ void GameScene::SetTutorial()
 	}
 
 	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
-	player->SetCollisionGoal(key->GetPosition(), key->GetScale());	//ゴール
+	player->SetCollisionGoal(goal->GetPosition(), goal->GetScale());	//ゴール
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
 		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト

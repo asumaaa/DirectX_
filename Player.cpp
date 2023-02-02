@@ -58,6 +58,20 @@ void Player::Update()
 	//当たり判定更新
 	UpdateCollision();
 
+	position1.x += fallVelocity1.x;
+	position1.y += fallVelocity1.y;
+	position1.z += fallVelocity1.z;
+	position0.x += fallVelocity0.x;
+	position0.y += fallVelocity0.y;
+	position0.z += fallVelocity0.z;
+
+	position0.x += velocity0.x;
+	position0.y += velocity0.y;
+	position0.z += velocity0.z;
+	position1.x += velocity1.x;
+	position1.y += velocity1.y;
+	position1.z += velocity1.z;
+
 	//hitboxの座標調整
 	hitboxPosition0.x = position0.x;
 	hitboxPosition0.y = position0.y + 6;
@@ -66,6 +80,9 @@ void Player::Update()
 	hitboxPosition1.x = position1.x;
 	hitboxPosition1.y = position1.y - 6;
 	hitboxPosition1.z = position1.z;
+
+	preGroundFlag0 = groundFlag0;
+	preGroundFlag1 = groundFlag1;
 
 	//オブジェクト更新
 	object0->SetPosition(position0);
@@ -101,6 +118,8 @@ void Player::SetTitle()
 {
 	groundFlag0 = false;
 	groundFlag1 = false;
+	keyFlag = false;
+	goalFlag = false;
 
 	SetPosition0({ 0,10,0 });
 	SetPosition1({ 0,-10,0 });
@@ -110,6 +129,8 @@ void Player::SetTutorial()
 {
 	groundFlag0 = false;
 	groundFlag1 = false;
+	keyFlag = false;
+	goalFlag = false;
 
 	SetPosition0({ -50,10,-50 });
 	SetPosition1({-50,-10,-50});
@@ -143,7 +164,7 @@ void Player::UpdateCollision()
 				hitboxPosition0.x += 0.0002f;
 			}
 		}
-		//下からぶつかる場合
+		//前からぶつかる場合
 		if (-2 + velocity0.z <= Max.z - collision->GetMin().z && Max.z - collision->GetMin().z <= 2 + velocity0.z)
 		{
 			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
@@ -152,7 +173,121 @@ void Player::UpdateCollision()
 				hitboxPosition0.z -= 0.0002f;
 			}
 		}
-		//上からぶつかる場合
+		//後ろからぶつかる場合
+		if (-2 + velocity0.z <= Min.z - collision->GetMax().z && Min.z - collision->GetMax().z <= 2 + velocity0.z)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+			{
+				position0.z += 0.0002f;
+				hitboxPosition0.z += 0.0002f;
+			}
+		}
+		//表のオブジェクト
+		XMFLOAT3 h = { hitboxPosition0.x,hitboxPosition0.y + 3,hitboxPosition0.z };
+		if (collision->Update(h, hitboxScale0) == 1)
+		{
+			//接地フラグを立てる
+			groundFlag0 = true;
+			//自由落下Tの値をリセット
+			fallTimer0 = 0;
+			//前のフレームと接地フラグが異なれは
+			if (groundFlag0 != preGroundFlag0)
+			{
+				playerState = back;
+			}
+			while (collision->Update(h, hitboxScale0) == 1)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				position0.y += 0.002f;
+				hitboxPosition0.y += 0.002f;
+				h.y += 0.002f;
+			}
+		}
+	}
+
+	//-----------床との当たり判定-----------------
+	for (std::unique_ptr<Collision>& collision : collisionsFloor)
+	{
+		//表のオブジェクト
+		if (hitboxPosition0.y >= collision->GetMax().y)
+		{
+			if (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+			{
+				//接地フラグを立てる
+				groundFlag0 = true;
+				//自由落下Tの値をリセット
+				fallTimer0 = 0;
+				//落下ベクトルをリセット
+				fallVelocity0.y = 0;
+			}
+			//めり込まなくなりまで加算
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				if (groundFlag0 != preGroundFlag0)
+				{
+					playerState = back;
+				}
+				position0.y += 0.002f;
+				hitboxPosition0.y += 0.002f;
+			}
+		}
+		if (hitboxPosition1.y <= collision->GetMin().y)
+		{
+			//裏のオブジェクト
+			if (collision->Update(position1, scale1) == 1)
+			{
+				//接地フラグを立てる
+				groundFlag1 = true;
+				//自由落下Tの値をリセット
+				fallTimer1 = 0;
+				//落下ベクトルをリセット
+				fallVelocity1.y = 0;
+			}
+			//めり込まなくなりまで加算
+			while (collision->Update(position1, scale1) == 1)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				if (groundFlag1 != preGroundFlag1)
+				{
+					playerState = front;
+				}
+				position1.y -= 0.002f;
+				if (collision->Update(position1, scale1) == 0)
+				{
+					break;
+				}
+			}
+		}
+
+		//左からぶつかる場合
+		if (-2 + velocity0.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity0.x)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+			{
+				position0.x -= 0.0002f;
+				hitboxPosition0.x -= 0.0002f;
+			}
+		}
+		//右からぶつかる場合
+		if (-2 + velocity0.x <= Min.x - collision->GetMax().x && Min.x - collision->GetMax().x <= 2 + velocity0.x)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+			{
+				position0.x += 0.0002f;
+				hitboxPosition0.x += 0.0002f;
+			}
+		}
+		//前からぶつかる場合
+		if (-2 + velocity0.z <= Max.z - collision->GetMin().z && Max.z - collision->GetMin().z <= 2 + velocity0.z)
+		{
+			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+			{
+				position0.z -= 0.0002f;
+				hitboxPosition0.z -= 0.0002f;
+			}
+		}
+		//後ろからぶつかる場合
 		if (-2 + velocity0.z <= Min.z - collision->GetMax().z && Min.z - collision->GetMax().z <= 2 + velocity0.z)
 		{
 			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
@@ -162,95 +297,41 @@ void Player::UpdateCollision()
 			}
 		}
 
-		//めり込まなくなりまで加算
-		//while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
-		//{
-		//	if (hitboxPosition0.x < collision->GetPosition().x)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.x -= 0.0002f;
-		//		hitboxPosition0.x -= 0.0002f;
-		//	}
-		//	if (hitboxPosition0.x > collision->GetPosition().x)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.x += 0.0002f;
-		//		hitboxPosition0.x += 0.0002f;
-		//	}
-		//	if (hitboxPosition0.z < collision->GetPosition().z)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.z -= 0.0002f;
-		//		hitboxPosition0.z -= 0.0002f;
-		//	}
-		//	if (hitboxPosition0.z > collision->GetPosition().z)
-		//	{
-		//		//めり込んだらプレイヤーの状態を変更
-		//		if (collision->Update(hitboxPosition0, hitboxScale0) == 0)
-		//		{
-		//			break;
-		//		}
-		//		position0.z += 0.0002f;
-		//		hitboxPosition0.z += 0.0002f;
-		//	}
-		//}
-	}
 
-	//-----------床との当たり判定-----------------
-	for (std::unique_ptr<Collision>& collision : collisionsFloor)
-	{
-		//表のオブジェクト
-		if (collision->Update(position0, scale0) == 1)
+		//左からぶつかる場合
+		if (-2 + velocity1.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity1.x)
 		{
-			//接地フラグを立てる
-			groundFlag0 = true;
-			//自由落下Tの値をリセット
-			fallTimer0 = 0;
-			//落下ベクトルをリセット
-			fallVelocity0.y = 0;
-		}
-		//めり込まなくなりまで加算
-		while (collision->Update(position0, scale0) == 1)
-		{
-			//めり込んだらプレイヤーの状態を変更
-			playerState = back;
-			position0.y += 0.002f;
-			if (collision->Update(position0, scale0) == 0)
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
 			{
-				break;
+				position1.x -= 0.0002f;
+				hitboxPosition1.x -= 0.0002f;
 			}
 		}
-		//裏のオブジェクト
-		if (collision->Update(position1, scale1) == 1)
+		//右からぶつかる場合
+		if (-2 + velocity1.x <= Min.x - collision->GetMax().x && Min.x - collision->GetMax().x <= 2 + velocity1.x)
 		{
-			//接地フラグを立てる
-			groundFlag1 = true;
-			//自由落下Tの値をリセット
-			fallTimer1 = 0;
-			//落下ベクトルをリセット
-			fallVelocity1.y = 0;
-		}
-		//めり込まなくなりまで加算
-		while (collision->Update(position1, scale1) == 1)
-		{
-			//めり込んだらプレイヤーの状態を変更
-			playerState = front;
-			position1.y -= 0.002f;
-			if (collision->Update(position1, scale1) == 0)
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
 			{
-				break;
+				position1.x += 0.0002f;
+				hitboxPosition1.x += 0.0002f;
+			}
+		}
+		//前からぶつかる場合
+		if (-2 + velocity1.z <= Max.z - collision->GetMin().z && Max.z - collision->GetMin().z <= 2 + velocity1.z)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.z -= 0.0002f;
+				hitboxPosition1.z -= 0.0002f;
+			}
+		}
+		//後ろからぶつかる場合
+		if (-2 + velocity1.z <= Min.z - collision->GetMax().z && Min.z - collision->GetMax().z <= 2 + velocity1.z)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.z += 0.0002f;
+				hitboxPosition1.z += 0.0002f;
 			}
 		}
 	}
@@ -265,6 +346,19 @@ void Player::UpdateCollision()
 		if (collision->Update(hitboxPosition1, hitboxScale1) == 1)
 		{
 			keyFlag = true;
+		}
+	}
+
+	//----------ゴールとの当たり判定---------
+	for (std::unique_ptr<Collision>& collision : collisionsGoal)
+	{
+		if (collision->Update(hitboxPosition0, hitboxScale0) == 1)
+		{
+			goalFlag = true;
+		}
+		if (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+		{
+			goalFlag = true;
 		}
 	}
 }
@@ -301,38 +395,55 @@ void Player::UpdateMove()
 
 
 	//地面に接していない場合の落下処理(表のオブジェクト)
-	if (groundFlag0 == false)
-	{
-		//60フレームでタイマーを1進める
+	//60フレームでタイマーを1進める
 		fallTimer0 += 3.0f / 60.0f;
 		//落下ベクトル計算
-		float v = GAcceleration * fallTimer0;
 		fallVelocity0.y = -(GAcceleration * fallTimer0);
 		//座標に加算
-		position0.x += fallVelocity0.x;
+		/*position0.x += fallVelocity0.x;
 		position0.y += fallVelocity0.y;
-		position0.z += fallVelocity0.z;
-	}
+		position0.z += fallVelocity0.z;*/
 	//地面に接していない場合の落下処理(裏のオブジェクト)
-	if (groundFlag1 == false)
-	{
 		//60フレームでタイマーを1進める
 		fallTimer1 += 3.0f / 60.0f;
 		//落下ベクトル計算
-		float v = GAcceleration * fallTimer1;
 		fallVelocity1.y = +(GAcceleration * fallTimer1);
 		//座標に加算
-		position1.x += fallVelocity1.x;
+		/*position1.x += fallVelocity1.x;
 		position1.y += fallVelocity1.y;
-		position1.z += fallVelocity1.z;
-	}
+		position1.z += fallVelocity1.z;*/
+	//if (groundFlag0 == false)
+	//{
+	//	//60フレームでタイマーを1進める
+	//	fallTimer0 += 3.0f / 60.0f;
+	//	//落下ベクトル計算
+	//	float v = GAcceleration * fallTimer0;
+	//	fallVelocity0.y = -(GAcceleration * fallTimer0);
+	//	//座標に加算
+	//	position0.x += fallVelocity0.x;
+	//	position0.y += fallVelocity0.y;
+	//	position0.z += fallVelocity0.z;
+	//}
+	////地面に接していない場合の落下処理(裏のオブジェクト)
+	//if (groundFlag1 == false)
+	//{
+	//	//60フレームでタイマーを1進める
+	//	fallTimer1 += 3.0f / 60.0f;
+	//	//落下ベクトル計算
+	//	float v = GAcceleration * fallTimer1;
+	//	fallVelocity1.y = +(GAcceleration * fallTimer1);
+	//	//座標に加算
+	//	position1.x += fallVelocity1.x;
+	//	position1.y += fallVelocity1.y;
+	//	position1.z += fallVelocity1.z;
+	//}
 
-	position0.x += velocity0.x;
+	/*position0.x += velocity0.x;
 	position0.y += velocity0.y;
 	position0.z += velocity0.z;
 	position1.x += velocity1.x;
 	position1.y += velocity1.y;
-	position1.z += velocity1.z;
+	position1.z += velocity1.z;*/
 
 
 	//プレイヤーの向き

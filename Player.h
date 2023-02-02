@@ -142,6 +142,8 @@ private:
 	//接地フラグ
 	bool groundFlag0 = false;
 	bool groundFlag1 = false;
+	bool preGroundFlag0 = false;
+	bool preGroundFlag1 = false;
 
 	//表裏の列挙型
 public:

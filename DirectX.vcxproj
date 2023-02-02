@@ -121,7 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)3D;$(ProjectDir)base;$(ProjectDir)DirectXTex;$(ProjectDir);$(ProjectDir)fbx;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaderes\FbxShader;$(ProjectDir)Resources\Shaderes\OBJShader;$(ProjectDir)Resources\Shaderes\ParticleShader;$(ProjectDir)Resources\Shaderes\SpriteShader;$(ProjectDir)Resources\Shaderes\Shader;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

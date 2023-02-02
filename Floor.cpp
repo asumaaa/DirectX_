@@ -27,7 +27,7 @@ void Floor::Draw(ID3D12GraphicsCommandList* cmdList)
 
 void Floor::SetTitle()
 {
-	SetScale({ 360,0.5,30 });
+	SetScale({ 1000,0.5,1000});
 	SetPosition({ 180,0,0 });
 }
 
