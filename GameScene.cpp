@@ -321,6 +321,11 @@ void GameScene::TitleDraw()
 	{
 		textObject->Draw(dxCommon_->GetCommandList());
 	}
+
+	keySprite.SpriteTransferVertexBuffer(keySprite);
+	keySprite.SpriteUpdate(keySprite, spriteCommon);
+	sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
+	keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
 }
 
 void GameScene::GameUpdate()
