@@ -243,7 +243,9 @@ void Player::UpdateCollision()
 
 			//Ú’nƒtƒ‰ƒO‚ðfalse‚É
 			fallTimer1 = -1;
+			
 			groundFlag1 = false;
+			
 		}
 		//‚ß‚èž‚Ü‚È‚­‚È‚è‚Ü‚Å‰ÁŽZ
 		while (collision->Update(position0, scale0) == 1)

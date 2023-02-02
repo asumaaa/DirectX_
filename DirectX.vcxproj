@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\School\2NenKouki\TD\fbx_sdk\include;D:\School\2NenKouki\TD\fbx_sdk\include;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\include;$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>D:\School\2NenKouki\TD\fbx_sdk\include;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\include;$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
     <LibraryPath>D:\School\2NenKouki\TD\fbx_sdk\lib;D:\School\2NenKouki\TD\fbx_sdk\lib;C:\Users\a\Desktop\fbxsdk\lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
