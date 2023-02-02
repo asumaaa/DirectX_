@@ -153,6 +153,8 @@ void Player::UpdateCollision()
 			{
 				position0.x -= 0.0002f;
 				hitboxPosition0.x -= 0.0002f;
+				position1.x -= 0.0002f;
+				hitboxPosition1.x -= 0.0002f;
 			}
 		}
 		//右からぶつかる場合
@@ -162,6 +164,8 @@ void Player::UpdateCollision()
 			{
 				position0.x += 0.0002f;
 				hitboxPosition0.x += 0.0002f;
+				position1.x += 0.0002f;
+				hitboxPosition1.x += 0.0002f;
 			}
 		}
 		//前からぶつかる場合
@@ -171,6 +175,8 @@ void Player::UpdateCollision()
 			{
 				position0.z -= 0.0002f;
 				hitboxPosition0.z -= 0.0002f;
+				position1.z -= 0.0002f;
+				hitboxPosition1.z -= 0.0002f;
 			}
 		}
 		//後ろからぶつかる場合
@@ -180,6 +186,8 @@ void Player::UpdateCollision()
 			{
 				position0.z += 0.0002f;
 				hitboxPosition0.z += 0.0002f;
+				position1.z += 0.0002f;
+				hitboxPosition1.z += 0.0002f;
 			}
 		}
 		//表のオブジェクト
@@ -267,6 +275,7 @@ void Player::UpdateCollision()
 			{
 				position0.x -= 0.0002f;
 				hitboxPosition0.x -= 0.0002f;
+
 			}
 		}
 		//右からぶつかる場合

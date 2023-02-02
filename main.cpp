@@ -56,6 +56,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dxCommon->PostDraw();
 	}
 
+	fps->FpsControlEnd();
+
 	dxCommon->EndImgui();
 
 	//ウィンドウクラスを登録解除
