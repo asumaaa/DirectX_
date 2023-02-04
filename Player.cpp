@@ -322,6 +322,8 @@ void Player::UpdateMove()
 	player1 = player1 + direction / 5;
 	XMStoreFloat3(&position1, player1);
 
+	
+
 	//--------------落下、ジャンプ----------------
 	//スペースキーでジャンプ
 	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A && groundFlag0 == true && playerState == front)
@@ -374,6 +376,7 @@ void Player::UpdateMove()
 	position1.z += velocity1.z;
 
 
+
 	//プレイヤーの向き
 	float c = atan(velocity0.x / velocity0.z);
 	if (velocity0.z > 0)
@@ -387,8 +390,10 @@ void Player::UpdateMove()
 		playerDirection1 = { 0.0f + (float)PI	,atan(c)				,0.0f };
 	}
 
+
 	rotation0 = playerDirection0;
-	rotation1 = playerDirection1;
+	rotation1 = playerDirection1;    
+	
 }
 
 void Player::SetCollisionObstacle(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale)

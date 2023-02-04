@@ -60,6 +60,9 @@ public:
 	//当たり判定をクリアする関数(ステージ変わる毎に呼ぶ)
 	void ClearCollision();
 
+	XMFLOAT4 createRotationQuaternion(float yaw, float pitch, float roll);
+	void rotatePlayerObject(XMFLOAT3& playerPosition, XMFLOAT3& playerRotation, XINPUT_STATE& controllerState);
+
 	//ゲッター
 	//変形行列
 	DirectX::XMFLOAT3 GetPosition0() { return position0; }
@@ -76,6 +79,7 @@ public:
 	DirectX::XMFLOAT3 GetHitboxPosition1() { return hitboxPosition1; }
 	DirectX::XMFLOAT3 GetHitboxRotation1() { return hitboxRotation1; }
 	DirectX::XMFLOAT3 GetHitboxScale1() { return hitboxScale1; }
+
 
 	//鍵のフラグ
 	bool GetKeyFlag() { return keyFlag; }
@@ -113,6 +117,7 @@ private:
 	//変形行列
 	DirectX::XMFLOAT3 position0 = {0.0f,0.0f,0.0f};
 	DirectX::XMFLOAT3 rotation0 = {0.0f,0.0f,0.0f};
+	DirectX::XMFLOAT3 playerQuaternion;
 	DirectX::XMFLOAT3 scale0 = {0.01f,0.01f,0.01f};
 	DirectX::XMFLOAT3 position1;
 	DirectX::XMFLOAT3 rotation1;
@@ -144,6 +149,7 @@ private:
 	bool groundFlag0 = false;
 	bool groundFlag1 = false;
 	bool followFlag = false;
+
 
 	//表裏の列挙型
 public:
