@@ -138,16 +138,20 @@ void Player::SetTutorial()
 
 void Player::UpdateCollision()
 {
-	DirectX::XMFLOAT3 Min = { hitboxPosition0.x - hitboxScale0.x, 
+	DirectX::XMFLOAT3 Min = { hitboxPosition0.x - hitboxScale0.x,
 		hitboxPosition0.y - hitboxScale0.y, hitboxPosition0.z - hitboxScale0.z };
 	DirectX::XMFLOAT3 Max = { hitboxPosition0.x + hitboxScale0.x,
 		hitboxPosition0.y + hitboxScale0.y, hitboxPosition0.z + hitboxScale0.z };
 
+	DirectX::XMFLOAT3 Min1 = { hitboxPosition1.x - hitboxScale1.x,
+		hitboxPosition1.y - hitboxScale1.y, hitboxPosition1.z - hitboxScale1.z };
+	DirectX::XMFLOAT3 Max1 = { hitboxPosition1.x + hitboxScale1.x,
+		hitboxPosition1.y + hitboxScale1.y, hitboxPosition1.z + hitboxScale1.z };
 	//-----------オブジェクトとの当たり判定---------
 	for (std::unique_ptr<Collision>& collision : collisionsObstacle)
 	{
 		//左からぶつかる場合
-		if ( -2 + velocity0.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity0.x)
+		if (-2 + velocity0.x <= Max.x - collision->GetMin().x && Max.x - collision->GetMin().x <= 2 + velocity0.x)
 		{
 			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
@@ -158,7 +162,7 @@ void Player::UpdateCollision()
 			}
 		}
 		//右からぶつかる場合
-		if (-2 + velocity0.x <= Min.x - collision->GetMax().x &&  Min.x - collision->GetMax().x <= 2 + velocity0.x)
+		if (-2 + velocity0.x <= Min.x - collision->GetMax().x && Min.x - collision->GetMax().x <= 2 + velocity0.x)
 		{
 			while (collision->Update(hitboxPosition0, hitboxScale0) == 1)
 			{
@@ -211,7 +215,50 @@ void Player::UpdateCollision()
 				h.y += 0.002f;
 			}
 		}
+		//player2
+		//左からぶつかる場合
+		if (-2 + velocity1.x <= Max1.x - collision->GetMin().x && Max1.x - collision->GetMin().x <= 2 + velocity1.x)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.x -= 0.0002f;
+				hitboxPosition1.x -= 0.0002f;
+
+			}
+
+		}
+		//右からぶつかる場合
+		else if (-2 + velocity1.x <= Min1.x - collision->GetMax().x && Min1.x - collision->GetMax().x <= 2 + velocity1.x)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.x += 0.0002f;
+				hitboxPosition1.x += 0.0002f;
+
+			}
+		}
+		//下からぶつかる場合
+		else if (-2 + velocity1.z <= Max1.z - collision->GetMin().z && Max1.z - collision->GetMin().z <= 2 + velocity1.z)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.z -= 0.0002f;
+				hitboxPosition1.z -= 0.0002f;
+
+			}
+		}
+		//上からぶつかる場合
+		else if (-2 + velocity1.z <= Min1.z - collision->GetMax().z && Min1.z - collision->GetMax().z <= 2 + velocity1.z)
+		{
+			while (collision->Update(hitboxPosition1, hitboxScale1) == 1)
+			{
+				position1.z += 0.0002f;
+				hitboxPosition1.z += 0.0002f;
+
+			}
+		}
 	}
+
 
 	//-----------床との当たり判定-----------------
 	for (std::unique_ptr<Collision>& collision : collisionsFloor)
@@ -384,6 +431,14 @@ void Player::UpdateMove()
 	velocity1.z = x * 10;
 	velocity1.x = y * 10;
 
+	//player1がplayer0についていく処理
+	XMVECTOR player0 = XMLoadFloat3(&position0);
+	XMVECTOR player1 = XMLoadFloat3(&position1);
+	XMVECTOR direction = XMVector3Normalize(player0 - player1);
+	direction = XMVectorSetY(direction, 0);
+	player1 = player1 + direction / 5;
+	XMStoreFloat3(&position1, player1);
+
 
 	//--------------落下、ジャンプ----------------
 	//スペースキーでジャンプ
@@ -414,7 +469,7 @@ void Player::UpdateMove()
 		position0.z += fallVelocity0.z;*/
 	//地面に接していない場合の落下処理(裏のオブジェクト)
 		//60フレームでタイマーを1進める
-		fallTimer1 += 3.0f / 60.0f;
+		fallTimer1 += 2.0f / 60.0f;
 		//落下ベクトル計算
 		fallVelocity1.y = +(GAcceleration * fallTimer1);
 		//座標に加算
