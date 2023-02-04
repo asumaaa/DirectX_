@@ -448,7 +448,7 @@ void GameScene::SetTutorial()
 		}
 		if (i == 1)
 		{
-			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetScale({ 0.5f,30.0,120 });
 			floor->SetPosition({ -60,0,0 });
 		}
 		if (i == 2)

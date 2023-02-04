@@ -48,7 +48,7 @@ void Goal::Draw(ID3D12GraphicsCommandList* cmdList)
 
 void Goal::SetTutorial()
 {
-	SetPosition({ 50,10,50 });
+	SetPosition({ -65.0	,12.0	,-5.0 });
 
 	hitboxPosition.x = position.x;
 	hitboxPosition.y = position.y + 3;
