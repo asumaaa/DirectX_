@@ -257,6 +257,26 @@ void Player::UpdateCollision()
 
 			}
 		}
+		XMFLOAT3 h2 = { hitboxPosition1.x,hitboxPosition1.y + -3,hitboxPosition1.z };
+		if (collision->Update(h2, hitboxScale1) == 1)
+		{
+			//接地フラグを立てる
+			groundFlag1 = true;
+			//自由落下Tの値をリセット
+			fallTimer1 = 0;
+			//前のフレームと接地フラグが異なれは
+			if (groundFlag1 != preGroundFlag1)
+			{
+				playerState = front;
+			}
+			while (collision->Update(h2, hitboxScale1) == 1)
+			{
+				//めり込んだらプレイヤーの状態を変更
+				position1.y -= 0.002f;
+				hitboxPosition1.y -= 0.002f;
+				h2.y -= 0.002f;
+			}
+		}
 	}
 
 

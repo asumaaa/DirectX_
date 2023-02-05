@@ -252,6 +252,7 @@ void GameScene::Update()
 	//デバッグ用 キー入力でステージ変更
 	if (input_->TriggerKey(DIK_0))stage = Stage::Tutorial;
 	if (input_->TriggerKey(DIK_1))stage = Stage::Stage1;
+	if (input_->TriggerKey(DIK_2))stage = Stage::Stage2;
 
 	//前のシーンと今のシーンが違かったらリセット処理
 	if (scene_ != preScene_)
@@ -266,6 +267,7 @@ void GameScene::Update()
 		//チュートリアルに移動した場合
 		if (stage == Stage::Tutorial)	SetTutorial();
 		if (stage == Stage::Stage1)		SetStage1();
+		if (stage == Stage::Stage2)		SetStage2();
 	}
 
 	//前のフレームのシーン取得
@@ -353,11 +355,13 @@ void GameScene::GameUpdate()
 	{
 		obstacle->Update();
 	}
-
-	if (player->GetGoalFlag())
-	{
-		SetTutorial();
+	if (stage == Stage::Tutorial && player->GetGoalFlag()) {
+			SetStage1();
 	}
+	else if (stage == Stage::Stage1 && player->GetGoalFlag()) {
+		stage == Stage::Tutorial;
+	}
+	
 }
 
 void GameScene::GameDraw()
@@ -448,7 +452,7 @@ void GameScene::SetTutorial()
 		}
 		if (i == 1)
 		{
-			floor->SetScale({ 0.5f,30.0,120 });
+			floor->SetScale({ 0.5f,80.0,120 });
 			floor->SetPosition({ -60,0,0 });
 		}
 		if (i == 2)
@@ -500,7 +504,147 @@ void GameScene::SetStage1()
 	//プレイヤーセット
 	player->SetTutorial();
 	//障害物読み込み
-	LoadCsv(L"Resources/obstacleStage1.csv", stage1ObstacleVal);
+	LoadCsv(L"Resources/obstacleTutorial1.csv", tutorialObstacleVal);
+	
+	key->SetPosition({-57.0	,22.0,-5.0});
+	goal->SetPosition({ -57.0,-25.0,-20.0 });
+	//プレイヤーの当たり判定をリセット
+	player->ClearCollision();
+
+	//床セット
+	int i = 0;
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		if (i == 0)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}
+		if (i == 1)
+		{
+			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetPosition({ -60,0,0 });
+		}
+		if (i == 2)
+		{
+			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetPosition({ 60,0,0 });
+		}
+		if (i == 3)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,40,0 });
+		}
+		if (i == 4)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,-40,0 });
+		}
+		if (i == 5)
+		{
+			floor->SetScale({ 120,80.0f,0.5 });
+			floor->SetPosition({ 0,0,60 });
+		}
+		if (i == 6)
+		{
+			floor->SetScale({ 120,80.0f,0.5 });
+			floor->SetPosition({ 0,0,-60 });
+		}
+		/*else
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}*/
+
+		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+
+		i++;
+	}
+
+	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
+	player->SetCollisionGoal(goal->GetPosition(), goal->GetScale());	//ゴール
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
+	}
+}
+
+void GameScene::SetStage2()
+{
+	//プレイヤーセット
+	player->SetTutorial();
+	//障害物読み込み
+	LoadCsv(L"Resources/obstacleTutorial2.csv", tutorialObstacleVal);
+
+	key->SetPosition({ -10.0, -20.0, 	-30.0 });
+	goal->SetPosition({ -57.0,-25.0,-20.0 });
+	//プレイヤーの当たり判定をリセット
+	player->ClearCollision();
+
+	//床セット
+	int i = 0;
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		if (i == 0)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}
+		if (i == 1)
+		{
+			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetPosition({ -60,0,0 });
+		}
+		if (i == 2)
+		{
+			floor->SetScale({ 0.5f,80.0,120 });
+			floor->SetPosition({ 60,0,0 });
+		}
+		if (i == 3)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,40,0 });
+		}
+		if (i == 4)
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,-40,0 });
+		}
+		if (i == 5)
+		{
+			floor->SetScale({ 120,80.0f,0.5 });
+			floor->SetPosition({ 0,0,60 });
+		}
+		if (i == 6)
+		{
+			floor->SetScale({ 120,80.0f,0.5 });
+			floor->SetPosition({ 0,0,-60 });
+		}
+		/*else
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}*/
+
+		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+
+		i++;
+	}
+
+	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
+	player->SetCollisionGoal(goal->GetPosition(), goal->GetScale());	//ゴール
+	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
+	{
+		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
+	}
+}
+
+void GameScene::SetStage3()
+{
+	//プレイヤーセット
+	player->SetTutorial();
+	//障害物読み込み
+	LoadCsv(L"Resources/obstacleTutorial2.csv", tutorialObstacleVal);
 	//ゴールセット
 	goal->SetTutorial();
 	//鍵セット
@@ -511,18 +655,20 @@ void GameScene::SetStage1()
 	//床セット
 	for (std::unique_ptr<Floor>& floor : floors)
 	{
-		floor->SetScale({ 120,0.5,120 });
-		floor->SetPosition({ 0,0,0 });
+		floor->SetScale({ 360,0.5,50 });
+		floor->SetPosition({ 100,0,-50 });
 		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
 	}
+
+
+
 	player->SetCollisionKey(key->GetPosition(), key->GetScale());	//鍵
-	player->SetCollisionGoal(key->GetPosition(), key->GetScale());	//ゴール
+	player->SetCollisionGoal(goal->GetPosition(), goal->GetScale());	//ゴール
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
 		player->SetCollisionObstacle(obstacle->GetHitboxPosition(), obstacle->GetHitboxScale());	//オブジェクト
 	}
 }
-
 void GameScene::LoadCsv(const wchar_t* fileName, int obstacleVal)
 {
 	//ファイル読み込み

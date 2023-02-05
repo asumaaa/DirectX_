@@ -43,6 +43,8 @@ public:
 	//チュートリアルをセット
 	void SetTutorial();
 	void SetStage1();
+	void SetStage2();
+	void SetStage3();
 
 	//スペースキーでファイル読み込みを実行する関数
 	void LoadCsv(const wchar_t* fileName, int obstacleVal);
@@ -155,5 +157,6 @@ private:
 	//tutorial
 	size_t tutorialObstacleVal = 9;
 	size_t stage1ObstacleVal = 5;
+	size_t stage2ObstacleVal = 10;
 };
 

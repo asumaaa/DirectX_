@@ -47,7 +47,7 @@ void Key::Draw(ID3D12GraphicsCommandList* cmdList)
 
 void Key::SetTutorial()
 {
-	SetPosition({ -20.0	,20.0	,-5.0 });
+	SetPosition({ -22.0	,-10.0	,-50.0 });
 	hitboxPosition.x = position.x;
 	hitboxPosition.y = position.y + 3;
 	hitboxPosition.z = position.z;
