@@ -390,13 +390,13 @@ void GameScene::GameDraw()
 		keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
 	}*/
 
-	if (player->GetGroundFlag0())
+	/*if (player->GetGroundFlag0())
 	{
 		keySprite.SpriteTransferVertexBuffer(keySprite);
 		keySprite.SpriteUpdate(keySprite, spriteCommon);
 		sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
 		keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
-	}
+	}*/
 }
 
 void GameScene::SetTitle()
