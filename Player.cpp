@@ -241,8 +241,8 @@ void Player::UpdateCollision()
 				//めり込んだらプレイヤーの状態を変更
 				if (groundFlag0 != preGroundFlag0)
 				{
-					changeFlag = true;
-					playerState = back;
+					/*changeFlag = true;*/
+					/*playerState = back;*/
 				}
 				position0.y += 0.002f;
 				hitboxPosition0.y += 0.002f;
