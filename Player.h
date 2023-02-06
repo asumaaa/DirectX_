@@ -76,6 +76,9 @@ public:
 	DirectX::XMFLOAT3 GetHitboxRotation1() { return hitboxRotation1; }
 	DirectX::XMFLOAT3 GetHitboxScale1() { return hitboxScale1; }
 
+	bool GetGroundFlag0() { return groundFlag0; }
+	bool GetGroundFlag1() { return groundFlag1; }
+
 	//鍵のフラグ
 	bool GetKeyFlag() { return keyFlag; }
 	//ゴールのフラグ
@@ -139,11 +142,16 @@ private:
 	//落下タイマー
 	float fallTimer0 = 0.0f;
 	float fallTimer1 = 0.0f;
+	//裏のプレイヤーのためのタイマー
+	float fallTimer2 = 0.0f;
+
 	//接地フラグ
 	bool groundFlag0 = false;
 	bool groundFlag1 = false;
 	bool preGroundFlag0 = false;
 	bool preGroundFlag1 = false;
+	//下のプレイヤーの速度
+	float speed = 0.4f;
 
 	//表裏の列挙型
 public:
@@ -157,8 +165,12 @@ public:
 private:
 	//プレイヤーの状態を表すフラグ
 	State playerState = front;
+	State prePlayerState = front;
 	//鍵のフラグ
 	bool keyFlag = false;
 	bool goalFlag = false;
+
+	//入れ替わり用のフラグ
+	bool changeFlag = false;
 };
 

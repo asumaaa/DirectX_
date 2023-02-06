@@ -322,10 +322,14 @@ void GameScene::TitleDraw()
 		textObject->Draw(dxCommon_->GetCommandList());
 	}
 
-	keySprite.SpriteTransferVertexBuffer(keySprite);
-	keySprite.SpriteUpdate(keySprite, spriteCommon);
-	sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
-	keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
+	//デバッグ
+	/*if (player->GetGroundFlag0())
+	{
+		keySprite.SpriteTransferVertexBuffer(keySprite);
+		keySprite.SpriteUpdate(keySprite, spriteCommon);
+		sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
+		keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
+	}*/
 }
 
 void GameScene::GameUpdate()
@@ -335,7 +339,7 @@ void GameScene::GameUpdate()
 	camera_->Update();
 
 	//スペースを押したら指定してるマップに更新
-	DebugLoadCsv(L"Resources/obstacleTutorial.csv", tutorialObstacleVal);
+	/*DebugLoadCsv(L"Resources/obstacleTutorial.csv", tutorialObstacleVal);*/
 
 	//プレイヤー更新
 	player->Update();
@@ -352,11 +356,6 @@ void GameScene::GameUpdate()
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
 		obstacle->Update();
-	}
-
-	if (player->GetGoalFlag())
-	{
-		SetTutorial();
 	}
 }
 
@@ -383,7 +382,15 @@ void GameScene::GameDraw()
 	}
 
 	//鍵を取得したら描画
-	if (player->GetKeyFlag())
+	/*if (player->GetKeyFlag())
+	{
+		keySprite.SpriteTransferVertexBuffer(keySprite);
+		keySprite.SpriteUpdate(keySprite, spriteCommon);
+		sprite->SpriteCommonBeginDraw(dxCommon_->GetCommandList(), spriteCommon);
+		keySprite.SpriteDraw(dxCommon_->GetCommandList(), spriteCommon, dxCommon_->GetDevice(), keySprite.vbView);
+	}*/
+
+	if (player->GetGroundFlag0())
 	{
 		keySprite.SpriteTransferVertexBuffer(keySprite);
 		keySprite.SpriteUpdate(keySprite, spriteCommon);
