@@ -404,6 +404,7 @@ void Player::UpdateCollision()
 			{
 				position0.x -= 0.0002f;
 				hitboxPosition0.x -= 0.0002f;
+
 			}
 		}
 		//‰E‚©‚ç‚Ô‚Â‚©‚éê‡
