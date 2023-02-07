@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)3D;$(ProjectDir)base;$(ProjectDir)DirectXTex;$(ProjectDir);$(ProjectDir)fbx;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaderes\FbxShader;$(ProjectDir)Resources\Shaderes\OBJShader;$(ProjectDir)Resources\Shaderes\ParticleShader;$(ProjectDir)Resources\Shaderes\SpriteShader;$(ProjectDir)Resources\Shaderes\Shader;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)3D;$(ProjectDir)base;$(ProjectDir)DirectXTex;$(ProjectDir);$(ProjectDir)fbx;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaderes\FbxShader;$(ProjectDir)Resources\Shaderes\OBJShader;$(ProjectDir)Resources\Shaderes\ParticleShader;$(ProjectDir)Resources\Shaderes\SpriteShader;$(ProjectDir)Resources\Shaderes\Shader;$(ProjectDir)math;$(ProjectDir)gameObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirextTex;$(ProjectDir)fbx;$(ProjectDir);$(ProjectDir)base;$(ProjectDir)math;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaders\FbxShader;$(ProjectDir)Resources\Shaders\OBJShader;$(ProjectDir)Resources\Shaders\ParticleShader;$(ProjectDir)Resources\Shaders\Shader;$(ProjectDir)Resources\Shaders\SpriteShader;$(ProjectDir)3D</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirextTex;$(ProjectDir)fbx;$(ProjectDir);$(ProjectDir)base;$(ProjectDir)math;$(ProjectDir)Resources;$(ProjectDir)Resources\Shaders\FbxShader;$(ProjectDir)Resources\Shaders\OBJShader;$(ProjectDir)Resources\Shaders\ParticleShader;$(ProjectDir)Resources\Shaders\Shader;$(ProjectDir)Resources\Shaders\SpriteShader;$(ProjectDir)3D;$(ProjectDir)gameObject</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -158,24 +158,24 @@
     <ClCompile Include="base\FPS.cpp" />
     <ClCompile Include="base\Input.cpp" />
     <ClCompile Include="base\Message.cpp" />
+    <ClCompile Include="base\Sprite.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="fbx\FbxLoader.cpp" />
     <ClCompile Include="fbx\FbxModel.cpp" />
     <ClCompile Include="fbx\FbxObject3D.cpp" />
-    <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="gameObject\Floor.cpp" />
+    <ClCompile Include="gameObject\Goal.cpp" />
+    <ClCompile Include="gameObject\Key.cpp" />
+    <ClCompile Include="gameObject\Obstacle.cpp" />
+    <ClCompile Include="gameObject\TextObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Goal.cpp" />
-    <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Math2.cpp" />
     <ClCompile Include="math\Matrix4.cpp" />
     <ClCompile Include="math\Quaternion.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
-    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="TextObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3D\Collision.h" />
@@ -187,23 +187,23 @@
     <ClInclude Include="base\FPS.h" />
     <ClInclude Include="base\Input.h" />
     <ClInclude Include="base\Message.h" />
+    <ClInclude Include="base\Sprite.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="fbx\FbxLoader.h" />
     <ClInclude Include="fbx\FbxModel.h" />
     <ClInclude Include="fbx\FbxObject3D.h" />
-    <ClInclude Include="Floor.h" />
+    <ClInclude Include="gameObject\Floor.h" />
+    <ClInclude Include="gameObject\Goal.h" />
+    <ClInclude Include="gameObject\Key.h" />
+    <ClInclude Include="gameObject\Obstacle.h" />
+    <ClInclude Include="gameObject\TextObject.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Goal.h" />
-    <ClInclude Include="Key.h" />
     <ClInclude Include="math\Math2.h" />
     <ClInclude Include="math\Matrix4.h" />
     <ClInclude Include="math\Quaternion.h" />
     <ClInclude Include="math\Vector3.h" />
-    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="TextObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

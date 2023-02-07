@@ -61,6 +61,12 @@
     <Filter Include="ヘッダー ファイル\math">
       <UniqueIdentifier>{f63a18f9-c7e6-472f-8724-b4d1e91280b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject">
+      <UniqueIdentifier>{7eb61227-b573-4f42-ade4-d543f3627909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject">
+      <UniqueIdentifier>{22084622-2b87-464b-8579-fd378c4e3508}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,23 +132,23 @@
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="gameObject\Floor.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="gameObject\Goal.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Goal.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="gameObject\Key.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Key.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="gameObject\Obstacle.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Floor.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="gameObject\TextObject.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="TextObject.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="base\Sprite.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,23 +212,23 @@
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="gameObject\Floor.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="gameObject\Goal.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Goal.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="gameObject\Key.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Key.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="gameObject\Obstacle.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Floor.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="gameObject\TextObject.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="TextObject.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="base\Sprite.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
