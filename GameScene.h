@@ -43,10 +43,14 @@ public:
 	//チュートリアルをセット
 	void SetTutorial();
 	void SetStage1();
+	void SetStage2();
+	void SetStage3();
+	void SetStage4();
+	void SetStage5();
 
 	//スペースキーでファイル読み込みを実行する関数
 	void LoadCsv(const wchar_t* fileName, int obstacleVal);
-	void DebugLoadCsv(const wchar_t* fileName,int obstacleVal);
+	void DebugLoadCsv(const wchar_t* fileName, int obstacleVal);
 
 	//メンバ変数
 private:
@@ -61,6 +65,7 @@ private:
 	//------------モデル関連-------------
 	//fbx
 	FbxModel* model1 = nullptr;
+	FbxModel* model2 = nullptr;
 	//岩のモデル
 	FbxModel* stoneModel = nullptr;
 	//ゴールのモデル
@@ -73,6 +78,25 @@ private:
 	FbxModel* titleModel = nullptr;
 	//stage1
 	FbxModel* stage1Model = nullptr;
+	//stage2
+	FbxModel* stage2Model = nullptr;
+	//stage3
+	FbxModel* stage3Model = nullptr;
+	//stage4
+	FbxModel* stage4Model = nullptr;
+	//stage5
+	FbxModel* stage5Model = nullptr;
+	//tutorial
+	FbxModel* stageTutoModel = nullptr;
+	//clear1
+	FbxModel* clear1Model = nullptr;
+	//instruction
+	FbxModel* moveTextModel = nullptr;
+	FbxModel* startTextModel = nullptr;
+	FbxModel* jumpTextModel = nullptr;
+	FbxModel* cameraTextModel = nullptr;
+	FbxModel* zoomTextModel = nullptr;
+	FbxModel* returnTextModel = nullptr;
 
 	//キューブ
 	std::unique_ptr<CubeModel> cubeModel;
@@ -84,11 +108,12 @@ private:
 	//----------自作クラス---------
 	//プレイヤー
 	std::unique_ptr<Player> player;
+	std::unique_ptr<Player> player2;
 
 	//障害物
 	std::list<std::unique_ptr<Obstacle>> obstacles;
 	//障害物の数
-	size_t obstacleVal = 50;
+	size_t obstacleVal = 350;
 
 	//ゴール
 	std::unique_ptr<Goal>goal;
@@ -101,7 +126,7 @@ private:
 
 	//テキストのオブジェクト
 	std::list<std::unique_ptr<TextObject>>textObjects;
-	size_t textObjectVol = 2;
+	size_t textObjectVol = 25;
 
 	//---------------------------
 
@@ -145,6 +170,7 @@ private:
 		Stage2,
 		Stage3,
 		Stage4,
+		Stage5,
 	};
 	//ステージ
 	Stage stage = Stage::Title;
@@ -154,8 +180,21 @@ private:
 	//ステージごとの障害物の数
 	//tutorial
 	size_t tutorialObstacleVal = 10;
+	size_t tutorialObstacleVal1 = 9;
+	size_t tutorialObstacleVal2 = 21;
+	size_t tutorialObstacleVal3 = 24;
+	size_t tutorialObstacleVal4 = 126;
+	size_t tutorialObstacleVal5 = 126;
 	size_t stage1ObstacleVal = 5;
 
 	float num = 0;
-};
 
+	//クリアーフラッグ
+	bool clearTutoFlag = false;
+	bool clear1Flag = false;
+	bool clear2Flag = false;
+	bool clear3Flag = false;
+	bool clear4Flag = false;
+	bool clear5Flag = false;
+	bool clear6Flag = false;
+};

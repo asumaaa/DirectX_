@@ -35,6 +35,11 @@ public:
 
 	//シーンごとのセット
 	void SetTutorial();
+	void SetStage1();
+	void SetStage2();
+	void SetStage3();
+	void SetStage4();
+	void SetStage5();
 
 	//セッター
 	//変形行列セット

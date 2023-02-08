@@ -163,6 +163,66 @@ void Player::SetTutorial()
 	SetPosition1({ -30,-10,-30 });
 }
 
+void Player::SetStage()
+{
+	groundFlag0 = false;
+	groundFlag1 = false;
+	changeFlag = false;
+	keyFlag = false;
+	goalFlag = false;
+
+	fallTimer0 = 0.0f;
+	fallTimer1 = 0.0f;
+	fallTimer2 = 0.0f;
+
+
+	/*playerState = back;*/
+	startTimer = 0;
+
+	SetPosition0({ -50,10,-50 });
+	SetPosition1({ -50,-10,-50 });
+
+}
+
+void Player::SetStage2()
+{
+	groundFlag0 = false;
+	groundFlag1 = false;
+	changeFlag = false;
+	keyFlag = false;
+	goalFlag = false;
+
+	fallTimer0 = 0.0f;
+	fallTimer1 = 0.0f;
+	fallTimer2 = 0.0f;
+
+	/*playerState = back;*/
+	startTimer = 0;
+
+	SetPosition0({ 10.0	,10.0	,-20.0 });
+	SetPosition1({ 10.0	,-20.0	,-20.0 });
+}
+
+void Player::SetStage4()
+{
+	groundFlag0 = false;
+	groundFlag1 = false;
+	changeFlag = false;
+	keyFlag = false;
+	goalFlag = false;
+
+	fallTimer0 = 0.0f;
+	fallTimer1 = 0.0f;
+	fallTimer2 = 0.0f;
+
+
+	/*playerState = back;*/
+	startTimer = 0;
+
+	SetPosition0({ -50,10,50 });
+	SetPosition1({ -50,-10,50 });
+}
+
 void Player::UpdateCollision()
 {
 	//ヒットボックスの最大値、最小値を定義
@@ -525,6 +585,13 @@ void Player::UpdateMove()
 	//左ステックの変数
 	float x = dxInput->GamePad.state.Gamepad.sThumbLY / (32767.0f) * (PI / 90.0f);
 	float y = dxInput->GamePad.state.Gamepad.sThumbLX / (32767.0f) * (PI / 90.0f);
+	if (x != 0.0f || y != 0.0f)
+	{
+		moveFlag = true;
+	}
+	else {
+		moveFlag = false;
+	}
 	//スティックで得た変数を上のプレイヤーの速度に代入
 	//カメラ前方の場合
 	if (camera->GetMode() == Camera::forward)
@@ -550,6 +617,30 @@ void Player::UpdateMove()
 		velocity0.z = -(y * 10);
 		velocity0.x = x * 10;
 	}
+
+	if (position0.x < 150) {
+		sceneFlag = 100;
+	}
+	if (position0.x >= 150 && playerState == front) {
+		sceneFlag = 0;
+	}
+	else if (position0.x >= 150 && playerState == back) {
+		sceneFlag = 1;
+	}
+	if (position0.x >= 300 && playerState == front) {
+		sceneFlag = 2;
+	}
+	else if (position0.x >= 300 && playerState == back) {
+		sceneFlag = 3;
+	}
+	if (position0.x >= 450 && playerState == front) {
+		sceneFlag = 4;
+	}
+	else if (position0.x >= 450 && playerState == back) {
+		sceneFlag = 5;
+	}
+
+
 
 	//下のプレイヤーが上のプレイヤーについてくる処理
 	//上のプレイヤー→下のプレイヤーのベクトル作成

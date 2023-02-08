@@ -37,6 +37,9 @@ public:
 	//シーンごとのセット
 	void SetTitle();
 	void SetTutorial();
+	void SetStage();
+	void SetStage2();
+	void SetStage4();
 
 	//当たり判定更新
 	void UpdateCollision();
@@ -78,11 +81,14 @@ public:
 
 	bool GetGroundFlag0() { return groundFlag0; }
 	bool GetGroundFlag1() { return groundFlag1; }
+	bool GetMoveFlag() { return moveFlag; }
 
 	//鍵のフラグ
 	bool GetKeyFlag() { return keyFlag; }
 	//ゴールのフラグ
 	bool GetGoalFlag() { return goalFlag; }
+
+	int GetSceneFlag() { return sceneFlag; }
 
 	//メンバ変数
 private:
@@ -100,6 +106,7 @@ private:
 
 	//モデル
 	FbxModel* model;
+	FbxModel* model2;
 	CubeModel* cubeModel;
 	FbxObject3D* object0 = nullptr;
 	FbxObject3D* object1 = nullptr;
@@ -150,6 +157,7 @@ private:
 	bool groundFlag1 = false;
 	bool preGroundFlag0 = false;
 	bool preGroundFlag1 = false;
+	bool moveFlag = false;
 	//下のプレイヤーの速度
 	float speed = 0.4f;
 
@@ -174,5 +182,6 @@ private:
 	bool changeFlag = false;
 
 	int startTimer = 0;
+	int sceneFlag = 0;
 };
 

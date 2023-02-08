@@ -48,11 +48,28 @@ void Goal::Draw(ID3D12GraphicsCommandList* cmdList)
 
 void Goal::SetTutorial()
 {
-	SetPosition({ 50,10,50 });
+	SetPosition({ 50,5,50 });
 
 	hitboxPosition.x = position.x;
 	hitboxPosition.y = position.y + 3;
 	hitboxPosition.z = position.z;
-	hitboxRotation = { 0.0f,0.0f,0.0f };
+	hitboxScale = { 6.0f,6.0f,6.0f };
+}
+void Goal::SetStage2()
+{
+	SetPosition({ 10.0f	,5.0f	,10.0f });
+
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y + 3;
+	hitboxPosition.z = position.z;
+	hitboxScale = { 6.0f,6.0f,6.0f };
+}
+void Goal::SetStage4()
+{
+	SetPosition({ 50.0,   -31.0,  54.0 });
+
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y + 3;
+	hitboxPosition.z = position.z;
 	hitboxScale = { 6.0f,6.0f,6.0f };
 }

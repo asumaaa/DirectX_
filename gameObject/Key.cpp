@@ -104,3 +104,65 @@ void Key::SetTutorial()
 	hitboxScale = { 6.0f,6.0f,6.0f };
 
 }
+void Key::SetStage1()
+{
+	SetPosition({ -35.0f	,-25.0f	,-5.0f });
+	posY = position.y;
+	SetScale({ 0.24f ,0.24f , 0.48f });
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y - 3;
+	hitboxPosition.z = position.z;
+	hitboxRotation = { 0.0f,0.0f,0.0f };
+	hitboxScale = { 6.0f,6.0f,6.0f };
+
+}
+
+void Key::SetStage2()
+{
+	SetPosition({ 0.0f	,-10.0f	,-20.0f });
+	posY = position.y;
+	SetScale({ 0.24f ,0.24f , 0.48f });
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y - 3;
+	hitboxPosition.z = position.z;
+	hitboxRotation = { 0.0f,0.0f,0.0f };
+	hitboxScale = { 6.0f,6.0f,6.0f };
+
+}
+
+void Key::SetStage3()
+{
+	SetPosition({ 20.0f, -15.0f, 	-10.0f });
+	posY = position.y;
+	SetScale({ 0.024f ,0.024f , 0.048f });
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y - 3;
+	hitboxPosition.z = position.z;
+	hitboxRotation = { 0.0f,0.0f,0.0f };
+	hitboxScale = { 6.0f,6.0f,6.0f };
+}
+
+void Key::SetStage4()
+{
+	SetPosition({ 40.0f, -25.0f, -40.0f});
+	posY = position.y;
+	SetScale({ 0.24f ,0.24f , 0.48f });
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y - 3;
+	hitboxPosition.z = position.z;
+	hitboxRotation = { 0.0f,0.0f,0.0f };
+	hitboxScale = { 6.0f,6.0f,6.0f };
+
+}
+void Key::SetStage5()
+{
+	SetPosition({ 50.0f,-20.0f,35.0f });
+	posY = position.y;
+	SetScale({ 0.24f ,0.24f , 0.48f });
+	hitboxPosition.x = position.x;
+	hitboxPosition.y = position.y - 3;
+	hitboxPosition.z = position.z;
+	hitboxRotation = { 0.0f,0.0f,0.0f };
+	hitboxScale = { 6.0f,6.0f,6.0f };
+
+}

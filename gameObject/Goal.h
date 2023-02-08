@@ -31,6 +31,8 @@ public:
 
 	//シーンごとのセット
 	void SetTutorial();
+	void SetStage2();
+	void SetStage4();
 
 	//セッター
 	//変形行列セット
@@ -65,8 +67,8 @@ private:
 	std::unique_ptr<CubeObject3D> cubeObject;
 
 	//変形行列
-	DirectX::XMFLOAT3 position = { 0.0f,0.0f,0.0f };
-	DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 position = { 0.0f,-5.0f,0.0f };
+	DirectX::XMFLOAT3 rotation = { -1.6f,0.0f,0.0f};
 	DirectX::XMFLOAT3 scale = { 0.06f,0.06f,0.06f };
 
 	//hitboxの変形行列
