@@ -175,9 +175,9 @@ private:
 
 	int startTimer = 0;
 
-	int keyA = 0;
-	int preKeyA = 0;
-	int keyB = 0;
-	int preKeyB = 0;
+	float keyA = 0;
+	float preKeyA = 0;
+	float keyB = 0;
+	float preKeyB = 0;
 };
 
