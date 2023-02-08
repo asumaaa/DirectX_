@@ -345,3 +345,13 @@ void Camera::SetEye(XMFLOAT3 pos)
 {
 	eye_ = pos;
 }
+
+void Camera::SetCamera()
+{
+	//ƒJƒƒ‰‚ÌˆÊ’u
+	mode = forward;
+	approachMode = Max;
+	approachFlag = true;
+	approachMax = true;
+	approachMode = Max;
+}

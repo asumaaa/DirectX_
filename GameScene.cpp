@@ -599,6 +599,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clearTutoFlag = true;
+		camera_->SetCamera();
 	}
 
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage1)
@@ -608,6 +609,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear1Flag = true;
+		camera_->SetCamera();
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage2)
 	{
@@ -616,6 +618,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear2Flag = true;
+		camera_->SetCamera();
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage3)
 	{
@@ -624,6 +627,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear3Flag = true;
+		camera_->SetCamera();
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage4)
 	{
@@ -632,6 +636,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear4Flag = true;
+		camera_->SetCamera();
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage5)
 	{
@@ -640,6 +645,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear5Flag = true;
+		camera_->SetCamera();
 	}
 }
 

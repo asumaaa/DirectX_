@@ -36,6 +36,7 @@ public:
 	void Initialize();
 	//更新
 	void Update();
+	void SetCamera();
 	
 
 	//タイトル、ステージセレクトの挙動
