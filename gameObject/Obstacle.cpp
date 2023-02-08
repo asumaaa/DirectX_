@@ -48,7 +48,7 @@ void Obstacle::Update()
 void Obstacle::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	object->Draw(cmdList);
-	cubeObject->Draw(cmdList);
+	/*cubeObject->Draw(cmdList);*/
 }
 
 void Obstacle::SetHitbox()

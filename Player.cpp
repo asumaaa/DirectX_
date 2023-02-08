@@ -111,8 +111,8 @@ void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	object0->Draw(cmdList);
 	object1->Draw(cmdList);
-	cubeObject0->Draw(cmdList);
-	cubeObject1->Draw(cmdList);
+	/*cubeObject0->Draw(cmdList);
+	cubeObject1->Draw(cmdList);*/
 }
 
 void Player::SetTitle()

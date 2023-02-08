@@ -42,7 +42,7 @@ void Key::Update()
 void Key::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	object->Draw(cmdList);
-	cubeObject->Draw(cmdList);
+	/*cubeObject->Draw(cmdList);*/
 }
 
 void Key::SetTutorial()

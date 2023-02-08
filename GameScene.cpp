@@ -88,7 +88,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	CubeModel* newCubeModel = new CubeModel();
 	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
 	cubeModel.reset(newCubeModel);
-	cubeModel->SetImageData({ 1.0f, 0.0f, 0.0f,1.0f });
+	cubeModel->SetImageData({ 0.3f, 0.0f, 0.0f,0.7f });
 	//hitbox‚Ìƒ‚ƒfƒ‹
 	CubeModel* newCubeModel1 = new CubeModel();
 	newCubeModel1->CreateBuffers(dxCommon_->GetDevice());
@@ -370,15 +370,21 @@ void GameScene::GameDraw()
 	}
 	//Œ®•`‰æ
 	key->Draw(dxCommon_->GetCommandList());
-	//°•`‰æ
-	for (std::unique_ptr<Floor>& floor : floors)
-	{
-		floor->Draw(dxCommon_->GetCommandList());
-	}
 	//áŠQ•¨•`‰æ
 	for (std::unique_ptr<Obstacle>& obstacle : obstacles)
 	{
 		obstacle->Draw(dxCommon_->GetCommandList());
+	}
+
+	//°•`‰æ
+	int i = 0;
+	for (std::unique_ptr<Floor>& floor : floors)
+	{
+		if (i != 6)
+		{
+			floor->Draw(dxCommon_->GetCommandList());
+		}
+		i++;
 	}
 
 	//Œ®‚ğæ“¾‚µ‚½‚ç•`‰æ

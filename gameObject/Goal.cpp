@@ -43,7 +43,7 @@ void Goal::Update()
 void Goal::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	object->Draw(cmdList);
-	cubeObject->Draw(cmdList);
+	/*cubeObject->Draw(cmdList);*/
 }
 
 void Goal::SetTutorial()
