@@ -172,5 +172,7 @@ private:
 
 	//“ü‚ê‘Ö‚í‚è—p‚Ìƒtƒ‰ƒO
 	bool changeFlag = false;
+
+	int startTimer = 0;
 };
 

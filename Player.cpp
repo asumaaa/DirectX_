@@ -54,6 +54,14 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	startTimer += 1;
+
+	if (startTimer <= 120)
+	{
+		changeFlag = false;
+		playerState = front;
+	}
+
 	//移動更新
 	UpdateMove();
 	//当たり判定更新
@@ -119,12 +127,17 @@ void Player::SetTitle()
 {
 	groundFlag0 = false;
 	groundFlag1 = false;
+	changeFlag = false;
 	keyFlag = false;
 	goalFlag = false;
 
 	fallTimer0 = 0.0f;
 	fallTimer1 = 0.0f;
 	fallTimer2 = 0.0f;
+
+
+	/*playerState = back;*/
+	startTimer = 0;
 
 	SetPosition0({ 0,10,0 });
 	SetPosition1({ 0,-10,0 });
@@ -134,16 +147,20 @@ void Player::SetTutorial()
 {
 	groundFlag0 = false;
 	groundFlag1 = false;
+	changeFlag = false;
 	keyFlag = false;
 	goalFlag = false;
 
 	fallTimer0 = 0.0f;
 	fallTimer1 = 0.0f;
-		fallTimer2 = 0.0f;
+	fallTimer2 = 0.0f;
 
 
-	SetPosition0({ -50,3,-50 });
-	SetPosition1({-50,-3,-50});
+	/*playerState = back;*/
+	startTimer = 0;
+
+	SetPosition0({ -30,10,-30 });
+	SetPosition1({ -30,-10,-30 });
 }
 
 void Player::UpdateCollision()
@@ -509,8 +526,30 @@ void Player::UpdateMove()
 	float x = dxInput->GamePad.state.Gamepad.sThumbLY / (32767.0f) * (PI / 90.0f);
 	float y = dxInput->GamePad.state.Gamepad.sThumbLX / (32767.0f) * (PI / 90.0f);
 	//スティックで得た変数を上のプレイヤーの速度に代入
-	velocity0.z = x * 10;
-	velocity0.x = y * 10;
+	//カメラ前方の場合
+	if (camera->GetMode() == Camera::forward)
+	{
+		velocity0.z = x * 10;
+		velocity0.x = y * 10;
+	}
+	//カメラ右の場合
+	if (camera->GetMode() == Camera::right)
+	{
+		velocity0.z = y * 10;
+		velocity0.x = -(x * 10);
+	}
+	//カメラ後方の場合
+	if (camera->GetMode() == Camera::backward)
+	{
+		velocity0.z = -(x * 10);
+		velocity0.x = -(y * 10);
+	}
+	//カメラ左の場合
+	if (camera->GetMode() == Camera::left)
+	{
+		velocity0.z = -(y * 10);
+		velocity0.x = x * 10;
+	}
 
 	//下のプレイヤーが上のプレイヤーについてくる処理
 	//上のプレイヤー→下のプレイヤーのベクトル作成
@@ -553,15 +592,6 @@ void Player::UpdateMove()
 		groundFlag1 = false;
 	}
 
-	//スペースキーでジャンプ
-	//if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A && groundFlag1 == true && playerState == back)
-	//{
-	//	//接地フラグをfalseに
-	//	fallTimer1 = -1;
-	//	groundFlag1 = false;
-	//}
-
-
 	//地面に接していない場合の落下処理(表のオブジェクト)
 	//60フレームでタイマーを1進める
 		fallTimer0 += 3.0f / 60.0f;
@@ -579,7 +609,7 @@ void Player::UpdateMove()
 			fallTimer2 += 3.0f / 60.0f;
 		}
 		//落下ベクトル計算
-		if (changeFlag == true)
+		if (changeFlag == true && startTimer > 120)
 		{
 			fallVelocity1.y = +(GAcceleration * fallTimer2);
 		}

@@ -41,7 +41,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "Resources/white1x1.png");
 	stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");
 	goalModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/beast.png");
-	keyModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/key.png");
+	keyModel = FbxLoader::GetInstance()->LoadModelFromFile("key", "Resources/key.png");
 	titleModel = FbxLoader::GetInstance()->LoadModelFromFile("title", "Resources/white1x1.png");
 	stage1Model = FbxLoader::GetInstance()->LoadModelFromFile("stage1", "Resources/white1x1.png");
 
@@ -88,7 +88,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	CubeModel* newCubeModel = new CubeModel();
 	newCubeModel->CreateBuffers(dxCommon_->GetDevice()); 
 	cubeModel.reset(newCubeModel);
-	cubeModel->SetImageData({ 0.3f, 0.0f, 0.0f,0.7f });
+	cubeModel->SetImageData({ 0.4f, 0.0f, 0.0f,0.7f });
 	//hitboxのモデル
 	CubeModel* newCubeModel1 = new CubeModel();
 	newCubeModel1->CreateBuffers(dxCommon_->GetDevice());
@@ -312,9 +312,11 @@ void GameScene::TitleDraw()
 	//プレイヤー描画
 	player->Draw(dxCommon_->GetCommandList());
 	//床描画
+	int i = 0;
 	for (std::unique_ptr<Floor>& floor : floors)
 	{
-		floor->Draw(dxCommon_->GetCommandList());
+		if(i == 0)floor->Draw(dxCommon_->GetCommandList());
+		i++;
 	}
 	//テキストのオブジェクト描画
 	for (std::unique_ptr<TextObject>& textObject : textObjects)
@@ -334,7 +336,7 @@ void GameScene::TitleDraw()
 
 void GameScene::GameUpdate()
 {
-	camera_->PlayerAim(player->GetPosition0(), player->GetPlayerState());
+	camera_->PlayerAim(player->GetPosition0(), player->GetPosition1(),player->GetPlayerState());
 	//カメラ更新
 	camera_->Update();
 
@@ -380,10 +382,27 @@ void GameScene::GameDraw()
 	int i = 0;
 	for (std::unique_ptr<Floor>& floor : floors)
 	{
-		if (i != 6)
+		//カメラ前の時
+		if (camera_->GetMode() == Camera::forward)
 		{
-			floor->Draw(dxCommon_->GetCommandList());
+			if (i != 6)floor->Draw(dxCommon_->GetCommandList());
 		}
+		//カメラ右の時
+		if (camera_->GetMode() == Camera::right)
+		{
+			if (i != 2)floor->Draw(dxCommon_->GetCommandList());
+		}
+		//カメラ後ろの時
+		if (camera_->GetMode() == Camera::backward)
+		{
+			if (i != 5)floor->Draw(dxCommon_->GetCommandList());
+		}
+		//カメラ左の時
+		if (camera_->GetMode() == Camera::left)
+		{
+			if (i != 1)floor->Draw(dxCommon_->GetCommandList());
+		}
+
 		i++;
 	}
 
@@ -428,11 +447,53 @@ void GameScene::SetTitle()
 	}
 
 	//床セット
+	int j = 0;
 	for (std::unique_ptr<Floor>& floor : floors)
 	{
-		floor->SetScale({ 360,0.5,30 });
-		floor->SetPosition({ 180,0,0 });
+		if (j == 0)
+		{
+			floor->SetScale({ 720,0.5,60 });
+			floor->SetPosition({ 0,0,0 });
+		}
+		if (j == 1)
+		{
+			floor->SetScale({ 0.5f,80.0,60 });
+			floor->SetPosition({ -320,0,0 });
+		}
+		if (j == 2)
+		{
+			floor->SetScale({ 0.5f,80.0,60 });
+			floor->SetPosition({ 320,0,0 });
+		}
+		if (j == 3)
+		{
+			floor->SetScale({ 720,0.5,60 });
+			floor->SetPosition({ 0,40,0 });
+		}
+		if (j == 4)
+		{
+			floor->SetScale({ 720,0.5,60 });
+			floor->SetPosition({ 0,-40,0 });
+		}
+		if (j == 5)
+		{
+			floor->SetScale({ 720,80.0f,0.5 });
+			floor->SetPosition({ 0,0,30 });
+		}
+		if (j == 6)
+		{
+			floor->SetScale({ 720,80.0f,0.5 });
+			floor->SetPosition({ 0,0,-30 });
+		}
+		/*else
+		{
+			floor->SetScale({ 120,0.5,120 });
+			floor->SetPosition({ 0,0,0 });
+		}*/
+
 		player->SetCollisionFloor(floor->GetPosition(), floor->GetScale());	//床
+
+		j++;
 	}
 
 }

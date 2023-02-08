@@ -14,5 +14,9 @@ float easeInOutQuart(float x);
 
 float easeOutQuint(float x);
 
+float easeOutBounce(float x);
+
+float easeInBounce(float x);
+
 
 

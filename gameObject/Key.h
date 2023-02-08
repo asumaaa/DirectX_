@@ -67,11 +67,19 @@ private:
 	//変形行列
 	DirectX::XMFLOAT3 position = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f };
-	DirectX::XMFLOAT3 scale = { 0.06f,0.06f,0.06f };
+	DirectX::XMFLOAT3 scale = { 0.24f,0.24f,0.24f };
 
 	//hitboxの変形行列
 	DirectX::XMFLOAT3 hitboxPosition = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 hitboxRotation = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 hitboxScale = { 0.01f,0.01f,0.01f };
+
+	//鍵を回転させる変数
+	float addRot = 0.0f;
+	float addPos = 0.0f;
+	float posY = 0.0f;
+
+	//イージングの種類を入れ替えるフラグ
+	bool easeInFlag = false;
 };
 

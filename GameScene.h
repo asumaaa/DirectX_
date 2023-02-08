@@ -155,5 +155,7 @@ private:
 	//tutorial
 	size_t tutorialObstacleVal = 10;
 	size_t stage1ObstacleVal = 5;
+
+	float num = 0;
 };
 
