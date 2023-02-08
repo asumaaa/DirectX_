@@ -577,7 +577,7 @@ void Player::UpdateMove()
 	{
 		keyB = 1;
 	}
-	if (keyA == 1 && /*preKeyA == 0 &&*/ groundFlag0 == true && playerState == front)
+	if (keyA == 1 && preKeyA == 0 && groundFlag0 == true && playerState == front)
 	{
 		//下のプレイヤーのジャンプ用の変数をリセット
 		fallTimer2 = 0;
