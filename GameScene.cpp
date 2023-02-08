@@ -86,7 +86,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	//ƒ‚ƒfƒ‹‚ÌÝ’è
 	//°‚Ìƒ‚ƒfƒ‹
 	CubeModel* newCubeModel = new CubeModel();
-	newCubeModel->CreateBuffers(dxCommon_->GetDevice());
+	newCubeModel->CreateBuffers(dxCommon_->GetDevice()); 
 	cubeModel.reset(newCubeModel);
 	cubeModel->SetImageData({ 0.3f, 0.0f, 0.0f,0.7f });
 	//hitbox‚Ìƒ‚ƒfƒ‹
