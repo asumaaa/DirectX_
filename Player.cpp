@@ -67,6 +67,9 @@ void Player::Update()
 	//当たり判定更新
 	UpdateCollision();
 
+	preKeyA = keyA;
+	preKeyB = keyB;
+
 	position1.x += fallVelocity1.x;
 	position1.y += fallVelocity1.y;
 	position1.z += fallVelocity1.z;
@@ -564,7 +567,17 @@ void Player::UpdateMove()
 
 	//--------------落下、ジャンプ----------------
 	//スペースキーでジャンプ
-	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_A  && groundFlag0 == true && playerState == front)
+	keyA = 0;
+	if (dxInput->GamePad.state.Gamepad.wButtons >= 0x1000 && dxInput->GamePad.state.Gamepad.wButtons < 0x2000)
+	{
+		keyA = 1;
+	}
+	keyB = 0;
+	if (dxInput->GamePad.state.Gamepad.wButtons >= 0x2000 && dxInput->GamePad.state.Gamepad.wButtons < 0x4000)
+	{
+		keyB = 1;
+	}
+	if (keyA == 1 && /*preKeyA == 0 &&*/ groundFlag0 == true && playerState == front)
 	{
 		//下のプレイヤーのジャンプ用の変数をリセット
 		fallTimer2 = 0;
@@ -581,7 +594,7 @@ void Player::UpdateMove()
 	}
 
 	//Bボタンで切り替え
-	if (dxInput->GamePad.state.Gamepad.wButtons & XINPUT_GAMEPAD_B && groundFlag1 == true && playerState == back)
+	if (keyB == 1 && preKeyB == 0 && groundFlag1 == true && playerState == back)
 	{
 		playerState = front;
 	}

@@ -174,5 +174,10 @@ private:
 	bool changeFlag = false;
 
 	int startTimer = 0;
+
+	int keyA = 0;
+	int preKeyA = 0;
+	int keyB = 0;
+	int preKeyB = 0;
 };
 

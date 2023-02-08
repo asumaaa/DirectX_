@@ -51,7 +51,7 @@ void DXInput::InputProcess() {
     if (pad_A)
     {
         GamePad.vibration.wLeftMotorSpeed = MaxVibration;
-        /*XInputSetState(0, &GamePad.vibration);*/
+       /* XInputSetState(0, &GamePad.vibration);*/
     }
     if (pad_B)
     {
@@ -69,7 +69,7 @@ void DXInput::InputProcess() {
         /*XInputSetState(0, &GamePad.vibration);*/
     }
 
-    /*WCHAR wcText[256] = { 0 };
+   /* WCHAR wcText[256] = { 0 };
     swprintf(wcText, 256, L"PAD_A=%d PAD_B=%d PAD_X=%d PAD_Y=%d", pad_A, pad_B, pad_X, pad_Y);*/
 
 }
