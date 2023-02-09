@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\gameObject">
       <UniqueIdentifier>{22084622-2b87-464b-8579-fd378c4e3508}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\light">
+      <UniqueIdentifier>{0efbdbba-7832-4654-9c04-d85b4e3ec156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\light">
+      <UniqueIdentifier>{2bacc7b8-beb8-496d-9987-44a48a373fe8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -150,8 +156,20 @@
     <ClCompile Include="base\Sprite.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="CircleShadow.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="light\CircleShadow.cpp">
+      <Filter>ソース ファイル\light</Filter>
+    </ClCompile>
+    <ClCompile Include="light\DirectionalLight.cpp">
+      <Filter>ソース ファイル\light</Filter>
+    </ClCompile>
+    <ClCompile Include="light\LightGroup.cpp">
+      <Filter>ソース ファイル\light</Filter>
+    </ClCompile>
+    <ClCompile Include="light\PointLight.cpp">
+      <Filter>ソース ファイル\light</Filter>
+    </ClCompile>
+    <ClCompile Include="light\SpotLight.cpp">
+      <Filter>ソース ファイル\light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,8 +251,20 @@
     <ClInclude Include="base\Sprite.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="CircleShadow.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="light\CircleShadow.h">
+      <Filter>ヘッダー ファイル\light</Filter>
+    </ClInclude>
+    <ClInclude Include="light\DirectionalLight.h">
+      <Filter>ヘッダー ファイル\light</Filter>
+    </ClInclude>
+    <ClInclude Include="light\LightGroup.h">
+      <Filter>ヘッダー ファイル\light</Filter>
+    </ClInclude>
+    <ClInclude Include="light\PointLight.h">
+      <Filter>ヘッダー ファイル\light</Filter>
+    </ClInclude>
+    <ClInclude Include="light\SpotLight.h">
+      <Filter>ヘッダー ファイル\light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

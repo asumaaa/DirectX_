@@ -236,6 +236,15 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	keySprite.SetScale(XMFLOAT2(64, 64));
 #pragma endregion
 
+#pragma region ライト
+
+	//ライト生成
+	/*lightGroup = LightGroup::Create();
+	lightGroup->SetCircleShadowActive(0, true);
+	FbxObject3D::SetLightGroup(lightGroup);*/
+
+#pragma endregion 
+
 	SetTitle();
 
 }
@@ -339,6 +348,13 @@ void GameScene::GameUpdate()
 	camera_->PlayerAim(player->GetPosition0(), player->GetPosition1(),player->GetPlayerState());
 	//カメラ更新
 	camera_->Update();
+
+	/*lightGroup->SetCircleShadowDir(0, XMVECTOR({ 0,-1,0,0 }));
+	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3(player->GetPosition0()));
+	lightGroup->SetCircleShadowAtten(0, XMFLOAT3({ 0.5f,0.6f,0.0f }));
+	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2({ 0.0f,0.5f }));
+
+	lightGroup->Update();*/
 
 	//スペースを押したら指定してるマップに更新
 	/*DebugLoadCsv(L"Resources/obstacleTutorial.csv", tutorialObstacleVal);*/

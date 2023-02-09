@@ -18,6 +18,7 @@
 #include "key.h"
 #include "Floor.h"
 #include "TextObject.h"
+#include "LightGroup.h"
 
 class GameScene
 {
@@ -57,6 +58,9 @@ private:
 	
 	//カメラ
 	std::unique_ptr<Camera> camera_;
+
+	//ライト
+	LightGroup* lightGroup = nullptr;
 
 	//------------モデル関連-------------
 	//fbx

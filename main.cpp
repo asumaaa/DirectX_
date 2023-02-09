@@ -27,6 +27,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input = Input::GetInstance();
 	input->Initialize(winApp);
 
+	//ライトオブジェクト初期化
+	LightGroup::StaticInitialize(dxCommon->GetDevice());
+
 	//ゲームシーン
 	GameScene* gameScene = nullptr;
 	gameScene = new GameScene();
