@@ -41,7 +41,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "Resources/white1x1.png");
 	model2 = FbxLoader::GetInstance()->LoadModelFromFile("Idle", "Resources/white1x1.png");
 	stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");
-	goalModel = FbxLoader::GetInstance()->LoadModelFromFile("goal", "Resources/white1x1.png");
+	goalModel = FbxLoader::GetInstance()->LoadModelFromFile("goal", "Resources/portal.png");
 	keyModel = FbxLoader::GetInstance()->LoadModelFromFile("key", "Resources/key.png");
 	titleModel = FbxLoader::GetInstance()->LoadModelFromFile("title", "Resources/red.png");
 	//stage
@@ -513,7 +513,14 @@ void GameScene::TitleUpdate()
 
 void GameScene::TitleDraw()
 {
-
+	if (input_->TriggerKey(DIK_R)) {
+		clearTutoFlag = false;
+		clear1Flag = false;
+		clear2Flag = false;
+		clear3Flag = false;
+		clear4Flag = false;
+		clear5Flag = false;
+	}
 	//ƒvƒŒƒCƒ„[•`‰æ
 	if (player->GetMoveFlag() == true) {
 		player->Draw(dxCommon_->GetCommandList());
