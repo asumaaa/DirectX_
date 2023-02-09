@@ -141,6 +141,8 @@ void Player::SetTitle()
 
 	SetPosition0({ 0,10,0 });
 	SetPosition1({ 0,-10,0 });
+
+	camera->GetMode() == Camera::forward;
 }
 
 void Player::SetTutorial()
@@ -161,6 +163,8 @@ void Player::SetTutorial()
 
 	SetPosition0({ -30,10,-30 });
 	SetPosition1({ -30,-10,-30 });
+
+	camera->GetMode() == Camera::forward;
 }
 
 void Player::SetStage()
@@ -182,6 +186,7 @@ void Player::SetStage()
 	SetPosition0({ -50,10,-50 });
 	SetPosition1({ -50,-10,-50 });
 
+	camera->GetMode() == Camera::forward;
 }
 
 void Player::SetStage2()
@@ -201,6 +206,8 @@ void Player::SetStage2()
 
 	SetPosition0({ 10.0	,10.0	,-20.0 });
 	SetPosition1({ 10.0	,-20.0	,-20.0 });
+
+	camera->GetMode() == Camera::forward;
 }
 
 void Player::SetStage4()
@@ -221,6 +228,8 @@ void Player::SetStage4()
 
 	SetPosition0({ -50,10,50 });
 	SetPosition1({ -50,-10,50 });
+
+	camera->GetMode() == Camera::forward;
 }
 
 void Player::UpdateCollision()

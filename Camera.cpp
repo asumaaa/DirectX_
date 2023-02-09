@@ -351,7 +351,5 @@ void Camera::SetCamera()
 	//ƒJƒƒ‰‚ÌˆÊ’u
 	mode = forward;
 	approachMode = Max;
-	approachFlag = true;
-	approachMax = true;
-	approachMode = Max;
+	changeRot = PI * 1 / 2;
 }

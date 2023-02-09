@@ -68,7 +68,7 @@ private:
 
 	//変形行列
 	DirectX::XMFLOAT3 position = { 0.0f,-5.0f,0.0f };
-	DirectX::XMFLOAT3 rotation = { -1.6f,0.0f,0.0f};
+	DirectX::XMFLOAT3 rotation = { -1.58f,0.0f,0.0f};
 	DirectX::XMFLOAT3 scale = { 0.06f,0.06f,0.06f };
 
 	//hitboxの変形行列

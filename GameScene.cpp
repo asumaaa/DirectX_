@@ -41,7 +41,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	model1 = FbxLoader::GetInstance()->LoadModelFromFile("Walking", "Resources/white1x1.png");
 	model2 = FbxLoader::GetInstance()->LoadModelFromFile("Idle", "Resources/white1x1.png");
 	stoneModel = FbxLoader::GetInstance()->LoadModelFromFile("stone", "Resources/white1x1.png");
-	goalModel = FbxLoader::GetInstance()->LoadModelFromFile("goal", "Resources/beast.png");
+	goalModel = FbxLoader::GetInstance()->LoadModelFromFile("goal", "Resources/white1x1.png");
 	keyModel = FbxLoader::GetInstance()->LoadModelFromFile("key", "Resources/key.png");
 	titleModel = FbxLoader::GetInstance()->LoadModelFromFile("title", "Resources/red.png");
 	//stage
@@ -599,7 +599,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clearTutoFlag = true;
-		camera_->SetCamera();
+
 	}
 
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage1)
@@ -609,7 +609,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear1Flag = true;
-		camera_->SetCamera();
+
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage2)
 	{
@@ -618,7 +618,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear2Flag = true;
-		camera_->SetCamera();
+
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage3)
 	{
@@ -627,7 +627,7 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear3Flag = true;
-		camera_->SetCamera();
+
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage4)
 	{
@@ -636,7 +636,6 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear4Flag = true;
-		camera_->SetCamera();
 	}
 	else if (player->GetGoalFlag() == true && stage == Stage::Stage5)
 	{
@@ -645,7 +644,6 @@ void GameScene::GameUpdate()
 		stage = Stage::Title;
 
 		clear5Flag = true;
-		camera_->SetCamera();
 	}
 }
 
@@ -738,6 +736,7 @@ void GameScene::GameDraw()
 
 void GameScene::SetTitle()
 {
+	camera_->SetCamera();
 	//プレイヤーセット
 	player->SetTitle();
 	player2->SetTitle();
@@ -814,7 +813,7 @@ void GameScene::SetTitle()
 }
 
 void GameScene::SetTutorial()
-{
+{	
 	//プレイヤーセット
 	player->SetTutorial();
 	player2->SetTutorial();
@@ -1039,6 +1038,7 @@ void GameScene::SetStage2()
 
 void GameScene::SetStage3()
 {
+
 	//プレイヤーセット
 	player->SetStage();
 	player2->SetStage();
@@ -1115,6 +1115,7 @@ void GameScene::SetStage3()
 
 void GameScene::SetStage4()
 {
+
 	//プレイヤーセット
 	player->SetStage();
 	player2->SetStage();
@@ -1190,6 +1191,7 @@ void GameScene::SetStage4()
 
 void GameScene::SetStage5()
 {
+	
 	//プレイヤーセット
 	player->SetStage();
 	player2->SetStage();
