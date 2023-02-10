@@ -1239,7 +1239,7 @@ void GameScene::SetStage5()
 		{
 			floor->SetScale({ 120,0.5,120 });
 			floor->SetPosition({ 0,100,0 });
-		}
+		} 
 		if (i == 4)
 		{
 			floor->SetScale({ 120,0.5,120 });
