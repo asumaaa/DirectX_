@@ -153,6 +153,7 @@
     <ClCompile Include="3D\CubeModel.cpp" />
     <ClCompile Include="3D\CubeObject3D.cpp" />
     <ClCompile Include="3D\Metaball.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\DXInput.cpp" />
     <ClCompile Include="base\FPS.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="3D\CubeModel.h" />
     <ClInclude Include="3D\CubeObject3D.h" />
     <ClInclude Include="3D\Metaball.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\DXInput.h" />
     <ClInclude Include="base\FPS.h" />
