@@ -1311,7 +1311,7 @@ void GameScene::LoadCsv(const wchar_t* fileName, int obstacleVal)
 	{
 		if (i <= obstacleVal)
 		{
-			obstacle->SetPosition({ 1,1,1 });
+			obstacle->SetPosition({ obstaclePos[i].x,obstaclePos[i].y,obstaclePos[i].z });
 			obstacle->SetHitbox();
 		}
 		else

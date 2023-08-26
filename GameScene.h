@@ -179,7 +179,7 @@ private:
 
 	//ステージごとの障害物の数
 	//tutorial
-	size_t tutorialObstacleVal = 10;
+	size_t tutorialObstacleVal = 9;
 	size_t tutorialObstacleVal1 = 9;
 	size_t tutorialObstacleVal2 = 21;
 	size_t tutorialObstacleVal3 = 24;
